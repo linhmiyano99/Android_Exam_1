@@ -69,7 +69,7 @@ public class DownloadImageTask extends AsyncTask<String, Void, Bitmap>{
         if(result  != null){
             this.imageView.setImageBitmap(result);
         } else{
-            Log.e("MyMessage", "Failed to fetch data!");
+            Log.e("MyMessage", "Failed to fetch data image!");
         }
     }
 }

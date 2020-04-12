@@ -6,7 +6,7 @@ public class User {
     public String reputation;
     public String location;
     public int age;
-    public int user_id;
+    public String user_id;
 
     @Override
     public String toString() {
