@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     List<User> data;
     Context context;
     Map<String, Boolean> mapBookmark;
+    Map<String, Bitmap> mapImage;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -45,6 +47,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                             mapBookmark.put((String) v.getTag(), true);
                         }
                     }
+                    //chua tim ra cach update 1 itemview
                     notifyDataSetChanged();
                     UpdateBoorkmark task = new UpdateBoorkmark((String) v.getTag(),  mapBookmark.get(v.getTag()));
                     task.execute(context);
@@ -58,8 +61,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.data = data;
         this.context = context;
         mapBookmark = new HashMap<>();
+        mapImage = new HashMap<>();
         LoadBookmarkTask task = new LoadBookmarkTask(this);
         task.execute(context);
+        for (User user: data) {
+            LoadImageTask task2 = new LoadImageTask(this);
+            task2.execute(user.profile_image);
+        }
     }
     @NonNull
     @Override
@@ -79,8 +87,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         User user =  data.get(position);
         holder.textDisplay.setText(user.toString() );
         holder.itemView.setTag(user.user_id);
-        loadImage(holder, user.profile_image);
+        //loadImage(holder, user.profile_image);
+        /*if(!mapImage.containsKey(user.profile_image)){
+            LoadImageTask task = new LoadImageTask(this);
+
+            task.execute(user.profile_image);
+        }*/
+        holder.imageProfile.setImageBitmap(mapImage.get(user.profile_image));
+
+
+
         holder.imageBookmark.setTag(user.user_id);
+
+
+        // load bookmark
         if(!mapBookmark.containsKey(user.user_id)){
             holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
         }
@@ -112,6 +132,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     public void setMapBookmark(Map<String, Boolean> list){
         mapBookmark = list;
+    }
+    public void setMapImage(Map<String, Bitmap> list){
+        mapImage = list;
+    }
+    public void addMapImage(String key, Bitmap value){
+        mapImage.put(key, value);
     }
 
 }
