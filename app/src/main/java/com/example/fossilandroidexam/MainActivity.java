@@ -6,9 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
+import android.view.View;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,24 +25,37 @@ public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
     private String token;
     private RecyclerView recyclerView;
+    private Button btnAllUsers;
+    private Button btnAllBookmarkUsers;
+    RecyclerViewAdapter adapter;
+
+    List<User> listUsers ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        btnAllUsers = findViewById(R.id.btnAllUsers);
+        btnAllBookmarkUsers = findViewById(R.id.btnAllBoorkmarkUsers);
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
+        listUsers = new ArrayList<>();
+        adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         createStackoverflowAPI();
-        stackoverflowAPI.getUsers().enqueue(usersCallback);
+        loadAllUsers(btnAllUsers);
     }
 
     Callback<ListWrapper<User>> usersCallback = new Callback<ListWrapper<User>> () {
         @Override
         public void onResponse(Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
-                List<User> data = new ArrayList<>();
-                data.addAll(response.body().items);
-                recyclerView.setAdapter(new RecyclerViewAdapter(MainActivity.this, data));
+               // List<User> listUsers = new ArrayList<>();
+                listUsers.clear();
+                listUsers.addAll(response.body().items);
+                adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
+                recyclerView.setAdapter(adapter);
                 Log.d("xxxxxx","succeed");
             } else {
                 Log.d("Users", "Code: " + response.code() + " Message: " + response.message());
@@ -69,5 +81,14 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         stackoverflowAPI = retrofit.create(StackoverflowAPI.class);
+    }
+
+    public void loadAllUsers(View view) {
+        stackoverflowAPI.getUsers().enqueue(usersCallback);
+    }
+
+    public void loadAllBookmarkUsers(View view) {
+        adapter.filtBoorkmark();
+        recyclerView.setAdapter(adapter);
     }
 }

@@ -3,6 +3,7 @@ package com.example.fossilandroidexam;
 import android.content.Context;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +13,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    List<User> data;
+    List<User> listUser;
     Context context;
     Map<String, Boolean> mapBookmark;
     Map<String, Bitmap> mapImage;
@@ -37,6 +38,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageBookmark.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //filtBoorkmark();
+                    Log.d("mapBookmark", String.valueOf(mapBookmark.size()));
                     if(!mapBookmark.containsKey(v.getTag())){
                         mapBookmark.put((String) v.getTag(), false);
                     }else {
@@ -59,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public RecyclerViewAdapter(Context context, List<User> data) {
-        this.data = data;
+        this.listUser = data;
         this.context = context;
         mapBookmark = new HashMap<>();
         mapImage = new HashMap<>();
@@ -85,7 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-        User user =  data.get(position);
+        User user =  listUser.get(position);
         holder.textDisplay.setText(user.toString() );
         holder.itemView.setTag(user.strUserId);
         //loadImage(holder, user.profile_image);
@@ -120,7 +122,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return listUser.size();
     }
     /**
      *  load Image
@@ -140,16 +142,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void addMapImage(String key, Bitmap value){
         mapImage.put(key, value);
     }
-   /* public void filtBoorkmark()
+    public void filtBoorkmark()
     {
-        for (User user:data) {
-            if(!mapBookmark.get(user.strUserId))
-            {
-                data.remove(user);
+        List<User> listBookmarkUsers = new ArrayList<>();
+        for (User user:listUser) {
+            if(mapBookmark.containsKey(user.strUserId)) {
+                if (mapBookmark.get(user.strUserId)) {
+                    listBookmarkUsers.add(user);
+                }
             }
         }
-    }*/
+        listUser.clear();
+        listUser.addAll(listBookmarkUsers);
+        notifyDataSetChanged();
+    }
     public void notifyLoadImageDone(){
         notifyDataSetChanged();
+    }
+    public void setData(List<User> data){
+        this.listUser = data;
+    }
+    public List<User> getData(){
+        return this.listUser;
     }
 }
