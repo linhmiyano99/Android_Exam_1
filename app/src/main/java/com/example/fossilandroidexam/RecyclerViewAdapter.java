@@ -97,10 +97,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             task.execute(user.profile_image);
         }*/
         holder.imageProfile.setImageBitmap(mapImage.get(user.srtProfileImageUrl));
-
-
-
         holder.imageBookmark.setTag(user.strUserId);
+        holder.imageProfile.setTag(user.strUserId);
+        holder.textDisplay.setTag(user.strUserId);
 
 
         // load bookmark
@@ -124,15 +123,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public int getItemCount() {
         return listUser.size();
     }
-    /**
-     *  load Image
-     */
-    public void loadImage(final RecyclerViewAdapter.ViewHolder holder, String imageUrl) {
-        // Create a task to download and display image.///
-        DownloadImageTask task = new DownloadImageTask(holder.imageProfile);
-        // Execute task (Pass imageUrl).
-        task.execute(imageUrl);
-    }
+
     public void setMapBookmark(Map<String, Boolean> list){
         mapBookmark = list;
     }
@@ -165,4 +156,5 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<User> getData(){
         return this.listUser;
     }
+
 }

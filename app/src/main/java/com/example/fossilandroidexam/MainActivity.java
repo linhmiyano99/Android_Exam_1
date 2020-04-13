@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -28,18 +32,22 @@ public class MainActivity extends AppCompatActivity {
     private Button btnAllUsers;
     private Button btnAllBookmarkUsers;
     RecyclerViewAdapter adapter;
+    Context context;
 
     List<User> listUsers ;
+    List<Reputation> listReputationOfUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        context = this;
         btnAllUsers = findViewById(R.id.btnAllUsers);
         btnAllBookmarkUsers = findViewById(R.id.btnAllBoorkmarkUsers);
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         listUsers = new ArrayList<>();
+        listReputationOfUser = new ArrayList<>();
         adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -56,9 +64,9 @@ public class MainActivity extends AppCompatActivity {
                 listUsers.addAll(response.body().items);
                 adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
                 recyclerView.setAdapter(adapter);
-                Log.d("xxxxxx","succeed");
+                Log.d("usersCallback","succeed");
             } else {
-                Log.d("Users", "Code: " + response.code() + " Message: " + response.message());
+                Log.d("usersCallback", "Code: " + response.code() + " Message: " + response.message());
             }
         }
 
@@ -91,4 +99,32 @@ public class MainActivity extends AppCompatActivity {
         adapter.filtBoorkmark();
         recyclerView.setAdapter(adapter);
     }
+    public void viewDetailUser(View v){
+        stackoverflowAPI.getReputationForUser(String.valueOf(v.getTag())).enqueue(reputationCallBack);
+
+
+    }
+    Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
+        @Override
+        public void onResponse(Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
+            if (response.isSuccessful()) {
+                listReputationOfUser.clear();
+                listReputationOfUser.addAll(response.body().items);
+                recyclerView.setAdapter(new RecyclerViewAdapterReputation(listReputationOfUser));
+                Log.d("reputationCallBack","succeed");
+            } else {
+                Log.d("reputationCallBack", "Code: " + response.code() + " Message: " + response.message());
+            }
+
+
+        }
+
+        @Override
+        public void onFailure(Call<ListWrapper<Reputation>> call, Throwable t) {
+            t.printStackTrace();
+            Log.d("xxxxxx","onFailure");
+
+        }
+
+    };
 }

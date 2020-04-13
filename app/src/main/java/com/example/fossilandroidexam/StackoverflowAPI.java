@@ -3,6 +3,7 @@ package com.example.fossilandroidexam;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface StackoverflowAPI {
@@ -13,5 +14,7 @@ public interface StackoverflowAPI {
 
     @GET("users")
     Call<User> getUserById(@Query("id") Integer id);
+    @GET("2.2/users/{userId}/reputation-history?page=1&pagesize=30&site=stackoverflow")
+    Call<ListWrapper<Reputation>> getReputationForUser(@Path("userId") String questionId);
 
 }
