@@ -26,8 +26,9 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, Map<String, Boole
     protected void onPostExecute(Map<String,Boolean> result) {
         if(result  != null){
             adapter.setMapBookmark(result);
+            adapter.notifyLoadImageDone();
         } else{
-            Log.e("MyMessage", "Failed to fetch data bookmark");
+            Log.e("MyMessage", "Failed to fetch data!");
         }
     }
 }

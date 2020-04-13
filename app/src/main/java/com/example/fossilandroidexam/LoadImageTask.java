@@ -67,6 +67,7 @@ public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
     protected void onPostExecute(Bitmap result) {
         if (result != null) {
             adapter.addMapImage(key, result);
+            adapter.notifyLoadImageDone();
         } else {
             Log.e("MyMessage", "Failed to fetch data image!");
         }

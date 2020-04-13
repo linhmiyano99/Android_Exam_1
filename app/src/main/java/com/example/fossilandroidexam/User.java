@@ -1,18 +1,25 @@
 package com.example.fossilandroidexam;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
-    public String display_name;
-    public String profile_image;
-    public String reputation;
-    public String location;
+    @SerializedName("display_name")
+    public String strDisplayName;
+    @SerializedName("profile_image")
+    public String srtProfileImageUrl;
+    @SerializedName("reputation")
+    public Integer intReputation;
+    @SerializedName("location")
+    public String strLocation;
     public int age;
-    public String user_id;
+    @SerializedName("user_id")
+    public String strUserId;
 
     @Override
     public String toString() {
-        return  display_name
-                + "\n " + reputation
-                + ", " + location
+        return  strDisplayName
+                + "\n " + intReputation
+                + ", " + strLocation
                 + ", " + age;
     }
 }
