@@ -34,7 +34,6 @@ public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
                         .url(key)
                         .get()
                         .build());
-        Log.d("xxxxx", String.valueOf(call));
         InputStream inputStream = null;
 
         try {
@@ -43,7 +42,6 @@ public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
 
                 try {
                     inputStream = response.body().byteStream();
-                    Log.d("xxxxx", String.valueOf(inputStream));
 
                 } finally {
 

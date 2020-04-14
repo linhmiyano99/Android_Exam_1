@@ -11,13 +11,21 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
     private String token;
     private RecyclerView recyclerView;
     private Button btnAllUsers;
-    private Button btnAllBookmarkUsers;
-    RecyclerViewAdapter adapter;
-    Context context;
+    private RecyclerViewAdapter adapter;
+    private Spinner spinnerPage;
 
     List<User> listUsers ;
     List<Reputation> listReputationOfUser;
@@ -41,9 +48,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this;
         btnAllUsers = findViewById(R.id.btnAllUsers);
-        btnAllBookmarkUsers = findViewById(R.id.btnAllBoorkmarkUsers);
+        spinnerPage= findViewById(R.id.spinnerPage);
+        List<Integer> listNumberOfSpinner =
+                Arrays.asList(1,2,3,4,5,6,7,8,9,10,
+                11,12,13,14,15,16,17,18,19,20,
+                21,22,23,24,25,26,27,28,29,30);
+        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, listNumberOfSpinner);
+        spinnerPage.setAdapter(arrayAdapter);
+        spinnerPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                loadAllUsers(btnAllUsers);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         listUsers = new ArrayList<>();
@@ -64,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                 listUsers.addAll(response.body().items);
                 adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
                 recyclerView.setAdapter(adapter);
-                Log.d("usersCallback","succeed");
+                Log.d("usersCallback", String.valueOf(listUsers));
             } else {
                 Log.d("usersCallback", "Code: " + response.code() + " Message: " + response.message());
             }
@@ -92,7 +116,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadAllUsers(View view) {
-        stackoverflowAPI.getUsers().enqueue(usersCallback);
+        Log.d("spinnerPage", String.valueOf(spinnerPage.getSelectedItem()));
+        stackoverflowAPI.getUsers((Integer) spinnerPage.getSelectedItem()).enqueue(usersCallback);
     }
 
     public void loadAllBookmarkUsers(View view) {
