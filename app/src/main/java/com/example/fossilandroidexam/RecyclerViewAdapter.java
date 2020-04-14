@@ -19,10 +19,10 @@ import java.util.List;
 import java.util.Map;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
-    List<User> listUser;
-    Context context;
-    Map<String, Boolean> mapBookmark;
-    Map<String, Bitmap> mapImage;
+    private List<User> listUser;
+    private Context context;
+    private Map<String, Boolean> mapBookmark;
+    private Map<String, Bitmap> mapImage;
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -9,8 +9,8 @@ import android.preference.PreferenceManager;
 public class UpdateBoorkmark extends AsyncTask<Context, Void, Void> {
 
     private RecyclerViewAdapter adapter;
-    String key;
-    Boolean value;
+    private String key;
+    private Boolean value;
     public UpdateBoorkmark( String key, Boolean value) {
         this.key = key;
         this.value = value;

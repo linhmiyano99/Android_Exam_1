@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -41,7 +42,7 @@ public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
             if (response.code() == 200 || response.code() == 201) {
 
                 try {
-                    inputStream = response.body().byteStream();
+                    inputStream = Objects.requireNonNull(response.body()).byteStream();
 
                 } finally {
 

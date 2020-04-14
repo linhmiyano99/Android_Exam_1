@@ -5,19 +5,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
+import android.widget.EditText;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -30,9 +31,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
     private RecyclerView recyclerView;
-    private Button btnAllUsers;
     private RecyclerViewAdapter adapter;
-    private Spinner spinnerPage;
+    private EditText txtPage;
     boolean isDetails = false;
     List<User> listUsers ;
     List<Reputation> listReputationOfUser;
@@ -42,32 +42,39 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        btnAllUsers = findViewById(R.id.btnAllUsers);
-        spinnerPage= findViewById(R.id.spinnerPage);
-        List<Integer> listNumberOfSpinner =
-                Arrays.asList(1,2,3,4,5,6,7,8,9,10,
-                11,12,13,14,15,16,17,18,19,20,
-                21,22,23,24,25,26,27,28,29,30);
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_dropdown_item, listNumberOfSpinner);
-        spinnerPage.setAdapter(arrayAdapter);
-        spinnerPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        txtPage= findViewById(R.id.txtPage);
+        txtPage.setText("1");
+        Button btnGoToPage = findViewById(R.id.btnGoToPage);
+        btnGoToPage.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onClick(View v) {
                 if(isDetails)
                 {
                     viewDetailUser(selectedUser);
                 }
                 else {
-                    loadAllUsers(btnAllUsers);
+                    loadAllUsers();
                 }
                 Log.d("xxxxxx","spinnerPage");
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
+
+       txtPage.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable s) {
+
+           }
+       });
 
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
@@ -82,10 +89,11 @@ public class MainActivity extends AppCompatActivity {
 
     Callback<ListWrapper<User>> usersCallback = new Callback<ListWrapper<User>> () {
         @Override
-        public void onResponse(Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
+        public void onResponse(@NotNull Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
                // List<User> listUsers = new ArrayList<>();
                 listUsers.clear();
+                assert response.body() != null;
                 listUsers.addAll(response.body().items);
                 adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
                 recyclerView.setAdapter(adapter);
@@ -96,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onFailure(Call<ListWrapper<User>> call, Throwable t) {
+        public void onFailure(@NotNull Call<ListWrapper<User>> call, Throwable t) {
             t.printStackTrace();
             Log.d("xxxxxx","onFailure");
 
@@ -117,10 +125,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadAllUsers(View view) {
-        Log.d("spinnerPage", String.valueOf(spinnerPage.getSelectedItem()));
-        stackoverflowAPI.getUsers((Integer) spinnerPage.getSelectedItem()).enqueue(usersCallback);
-        Log.d("xxxxxxx","hello");
+        txtPage.setText("1");
+        stackoverflowAPI.getUsers(1).enqueue(usersCallback);
         isDetails = false;
+    }
+    public void loadAllUsers() {
+        stackoverflowAPI.getUsers(Integer.parseInt(txtPage.getText().toString())).enqueue(usersCallback);
     }
 
     public void loadAllBookmarkUsers(View view) {
@@ -129,19 +139,20 @@ public class MainActivity extends AppCompatActivity {
         isDetails = false;
     }
     public void viewDetailUser(View v){
-        viewDetailUser(String.valueOf(v.getTag()));
-        spinnerPage.setSelection(0);
+        txtPage.setText("1");
         selectedUser = String.valueOf(v.getTag());
+        viewDetailUser(selectedUser);
         isDetails = true;
     }
     public void viewDetailUser(String userId){
-        stackoverflowAPI.getReputationForUser(userId, (Integer) spinnerPage.getSelectedItem()).enqueue(reputationCallBack);
+        stackoverflowAPI.getReputationForUser(userId, Integer.parseInt(txtPage.getText().toString())).enqueue(reputationCallBack);
     }
     Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
         @Override
-        public void onResponse(Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
+        public void onResponse(@NotNull Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
             if (response.isSuccessful()) {
                 listReputationOfUser.clear();
+                assert response.body() != null;
                 listReputationOfUser.addAll(response.body().items);
                 recyclerView.setAdapter(new RecyclerViewAdapterReputation(listReputationOfUser));
                 Log.d("reputationCallBack","succeed");
@@ -151,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onFailure(Call<ListWrapper<Reputation>> call, Throwable t) {
+        public void onFailure(@NotNull Call<ListWrapper<Reputation>> call, Throwable t) {
             t.printStackTrace();
             Log.d("xxxxxx","onFailure");
         }
