@@ -14,7 +14,7 @@ public interface StackoverflowAPI {
 
     @GET("users")
     Call<User> getUserById(@Query("id") Integer id);
-    @GET("2.2/users/{userId}/reputation-history?page=1&pagesize=30&site=stackoverflow")
-    Call<ListWrapper<Reputation>> getReputationForUser(@Path("userId") String userId);
+    @GET("2.2/users/{userId}/reputation-history?pagesize=30&site=stackoverflow")
+    Call<ListWrapper<Reputation>> getReputationForUser(@Path("userId") String userId,@Query("page") int numberOfPage);
 
 }

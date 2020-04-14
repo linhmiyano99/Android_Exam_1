@@ -4,11 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,13 +15,11 @@ import android.widget.Spinner;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,14 +29,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
-    private String token;
     private RecyclerView recyclerView;
     private Button btnAllUsers;
     private RecyclerViewAdapter adapter;
     private Spinner spinnerPage;
-
+    boolean isDetails = false;
     List<User> listUsers ;
     List<Reputation> listReputationOfUser;
+    private String selectedUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +53,14 @@ public class MainActivity extends AppCompatActivity {
         spinnerPage.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                loadAllUsers(btnAllUsers);
+                if(isDetails)
+                {
+                    viewDetailUser(selectedUser);
+                }
+                else {
+                    loadAllUsers(btnAllUsers);
+                }
+                Log.d("xxxxxx","spinnerPage");
             }
 
             @Override
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         createStackoverflowAPI();
-        loadAllUsers(btnAllUsers);
+
     }
 
     Callback<ListWrapper<User>> usersCallback = new Callback<ListWrapper<User>> () {
@@ -118,16 +119,23 @@ public class MainActivity extends AppCompatActivity {
     public void loadAllUsers(View view) {
         Log.d("spinnerPage", String.valueOf(spinnerPage.getSelectedItem()));
         stackoverflowAPI.getUsers((Integer) spinnerPage.getSelectedItem()).enqueue(usersCallback);
+        Log.d("xxxxxxx","hello");
+        isDetails = false;
     }
 
     public void loadAllBookmarkUsers(View view) {
         adapter.filtBoorkmark();
         recyclerView.setAdapter(adapter);
+        isDetails = false;
     }
     public void viewDetailUser(View v){
-        stackoverflowAPI.getReputationForUser(String.valueOf(v.getTag())).enqueue(reputationCallBack);
-
-
+        viewDetailUser(String.valueOf(v.getTag()));
+        spinnerPage.setSelection(0);
+        selectedUser = String.valueOf(v.getTag());
+        isDetails = true;
+    }
+    public void viewDetailUser(String userId){
+        stackoverflowAPI.getReputationForUser(userId, (Integer) spinnerPage.getSelectedItem()).enqueue(reputationCallBack);
     }
     Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
         @Override
@@ -140,15 +148,12 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 Log.d("reputationCallBack", "Code: " + response.code() + " Message: " + response.message());
             }
-
-
         }
 
         @Override
         public void onFailure(Call<ListWrapper<Reputation>> call, Throwable t) {
             t.printStackTrace();
             Log.d("xxxxxx","onFailure");
-
         }
 
     };
