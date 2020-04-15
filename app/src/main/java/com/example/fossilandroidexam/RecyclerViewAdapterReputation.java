@@ -1,5 +1,6 @@
 package com.example.fossilandroidexam;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,9 +39,8 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
 
         return new ViewHolder(view) ;
     }
+
     @NonNull
-
-
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterReputation.ViewHolder holder, int position) {
         Reputation reputation =  listReputations.get(position);
@@ -52,5 +52,9 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     @Override
     public int getItemCount() {
         return listReputations.size();
+    }
+    public void addLisDetail(List<Reputation> list) {
+        listReputations.addAll(list);
+        Log.d("List user in adapter", String.valueOf(listReputations.size()));
     }
 }

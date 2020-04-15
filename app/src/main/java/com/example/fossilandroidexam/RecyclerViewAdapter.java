@@ -140,8 +140,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<String> getListBookmark(){
         return this.listBookmark;
     }
-    public void addListUser(List<User> list)
-    {
+    public void addListUser(List<User> list) {
         listUser.addAll(list);
         Log.d("List user in adapter", String.valueOf(listUser.size()));
         for (User user: list) {
@@ -149,5 +148,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             task2.execute(user.srtProfileImageUrl);
         }
     }
-
+    public User getUserById(String useId) {
+        for (User user: listUser) {
+            if(user.strUserId == useId){
+                return user;
+            }
+        }
+        return null;
+    }
 }

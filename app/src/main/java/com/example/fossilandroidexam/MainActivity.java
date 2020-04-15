@@ -32,11 +32,15 @@ public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapterReputation adapterReputation;
     boolean isDetails = false;
+    boolean isUserPage = true;
     List<User> listUsers ;
     List<Reputation> listReputationOfUser;
     int intUserPage;
+    int intDetailPage;
     private Parcelable recyclerViewState;
+    private String userId;
 
 
 
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         intUserPage = 1;
+        intDetailPage = 1;
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -56,8 +61,19 @@ public class MainActivity extends AppCompatActivity {
 
                 if(layoutManager.findLastCompletelyVisibleItemPosition()== Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() -1){
                     //bottom of list!
-                    loadAllUsers();
-                    recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
+
+                    if(isUserPage) {
+                        Log.d("isUserPage", String.valueOf(intUserPage));
+
+                        recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
+                        loadAllUsers();
+                    }
+                    else if(isDetails){
+                        Log.d("isDetails", String.valueOf(intDetailPage));
+
+                        recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
+                        viewDetailUser(userId);
+                    }
                 }
 
             }
@@ -65,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         listUsers = new ArrayList<>();
         listReputationOfUser = new ArrayList<>();
         adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
+        adapterReputation = new RecyclerViewAdapterReputation(listReputationOfUser);
 
         createStackoverflowAPI();
         loadAllUsers();
@@ -76,12 +93,13 @@ public class MainActivity extends AppCompatActivity {
         public void onResponse(@NotNull Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
                 assert response.body() != null;
-                List<User> listUsers = new ArrayList<>(response.body().items);
-                if(listUsers.size() == 0)
+                List<User> list = new ArrayList<>(response.body().items);
+                if(response.body().items.size() == 0)
                     return;
-                Log.d("listUsers", String.valueOf(listUsers.size()));
+                Log.d("listUsers", String.valueOf(list.size()));
                 //adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
-                adapter.addListUser(listUsers);
+                listUsers.addAll(list);
+                adapter.addListUser(list);
                 Log.d("adapter", String.valueOf(adapter.getItemCount()));
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
                 recyclerView.setAdapter(adapter);
@@ -112,41 +130,52 @@ public class MainActivity extends AppCompatActivity {
         stackoverflowAPI = retrofit.create(StackoverflowAPI.class);
     }
 
-    public void loadAllUsers(View view) {
+   /* public void loadAllUsers(View view) {
         //txtPage.setText("1");
         stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
         isDetails = false;
-    }
+        isUserPage = true;
+    }*/
     public void loadAllUsers() {
         stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
+        isDetails = false;
+        isUserPage = true;
     }
 
     public void loadAllBookmarkUsers(View view) {
-        List<String> listBookmark=new ArrayList<String>();
-        listBookmark= adapter.getListBookmark();
+        //List<String> listBookmark=new ArrayList<String>();
+        //listBookmark= adapter.getListBookmark();
         adapter.filtBoorkmark();
 
         recyclerView.setAdapter(adapter);
         isDetails = false;
+        isUserPage = false;
     }
     public void viewDetailUser(View v){
         //txtPage.setText("1");
-
-        viewDetailUser(String.valueOf(v.getTag()));
-        isDetails = true;
+        intDetailPage =1;
+        userId = String.valueOf(v.getTag());
+        viewDetailUser(userId);
     }
     public void viewDetailUser(String userId){
-        stackoverflowAPI.getReputationForUser(userId,1).enqueue(reputationCallBack);
+        Log.d("viewDetailUser", String.valueOf(intDetailPage));
+        isUserPage = false;
+        isDetails = true;
+        stackoverflowAPI.getReputationForUser(userId, intDetailPage++).enqueue(reputationCallBack);
     }
     Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
         @Override
         public void onResponse(@NotNull Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
             if (response.isSuccessful()) {
-                listReputationOfUser.clear();
                 assert response.body() != null;
+                List<Reputation> list = new ArrayList<>(response.body().items);
+                if(response.body().items.size() == 0)
+                    return;
                 listReputationOfUser.addAll(response.body().items);
-                recyclerView.setAdapter(new RecyclerViewAdapterReputation(listReputationOfUser));
-                Log.d("reputationCallBack","succeed");
+                adapterReputation.addLisDetail(list);
+                Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
+                recyclerView.setAdapter(adapterReputation);
+                Log.d("reputationCallBack", String.valueOf(intDetailPage));
             } else {
                 Log.d("reputationCallBack", "Code: " + response.code() + " Message: " + response.message());
             }
