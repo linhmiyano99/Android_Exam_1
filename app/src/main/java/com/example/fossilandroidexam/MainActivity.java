@@ -1,16 +1,15 @@
 package com.example.fossilandroidexam;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 import retrofit2.Call;
@@ -32,58 +32,42 @@ public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
-    private EditText txtPage;
     boolean isDetails = false;
     List<User> listUsers ;
     List<Reputation> listReputationOfUser;
-    private String selectedUser;
+    int intUserPage;
+    private Parcelable recyclerViewState;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        txtPage= findViewById(R.id.txtPage);
-        txtPage.setText("1");
-        Button btnGoToPage = findViewById(R.id.btnGoToPage);
-        btnGoToPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isDetails)
-                {
-                    viewDetailUser(selectedUser);
-                }
-                else {
-                    loadAllUsers();
-                }
-                Log.d("xxxxxx","spinnerPage");
-            }
-        });
-
-       txtPage.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-           }
-
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-           }
-
-           @Override
-           public void afterTextChanged(Editable s) {
-
-           }
-       });
-
+        intUserPage = 1;
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
+        final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                //super.onScrolled(recyclerView, dx, dy);
+
+                if(layoutManager.findLastCompletelyVisibleItemPosition()== Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() -1){
+                    //bottom of list!
+                    loadAllUsers();
+                    recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
+                }
+
+            }
+        });
         listUsers = new ArrayList<>();
         listReputationOfUser = new ArrayList<>();
         adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         createStackoverflowAPI();
+        loadAllUsers();
 
     }
 
@@ -91,13 +75,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResponse(@NotNull Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
-               // List<User> listUsers = new ArrayList<>();
-                listUsers.clear();
                 assert response.body() != null;
-                listUsers.addAll(response.body().items);
-                adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
+                List<User> listUsers = new ArrayList<>(response.body().items);
+                if(listUsers.size() == 0)
+                    return;
+                Log.d("listUsers", String.valueOf(listUsers.size()));
+                //adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
+                adapter.addListUser(listUsers);
+                Log.d("adapter", String.valueOf(adapter.getItemCount()));
+                Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
                 recyclerView.setAdapter(adapter);
-                Log.d("usersCallback", String.valueOf(listUsers));
+
             } else {
                 Log.d("usersCallback", "Code: " + response.code() + " Message: " + response.message());
             }
@@ -125,27 +113,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadAllUsers(View view) {
-        txtPage.setText("1");
-        stackoverflowAPI.getUsers(1).enqueue(usersCallback);
+        //txtPage.setText("1");
+        stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
         isDetails = false;
     }
     public void loadAllUsers() {
-        stackoverflowAPI.getUsers(Integer.parseInt(txtPage.getText().toString())).enqueue(usersCallback);
+        stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
     }
 
     public void loadAllBookmarkUsers(View view) {
+        List<String> listBookmark=new ArrayList<String>();
+        listBookmark= adapter.getListBookmark();
         adapter.filtBoorkmark();
+
         recyclerView.setAdapter(adapter);
         isDetails = false;
     }
     public void viewDetailUser(View v){
-        txtPage.setText("1");
-        selectedUser = String.valueOf(v.getTag());
-        viewDetailUser(selectedUser);
+        //txtPage.setText("1");
+
+        viewDetailUser(String.valueOf(v.getTag()));
         isDetails = true;
     }
     public void viewDetailUser(String userId){
-        stackoverflowAPI.getReputationForUser(userId, Integer.parseInt(txtPage.getText().toString())).enqueue(reputationCallBack);
+        stackoverflowAPI.getReputationForUser(userId,1).enqueue(reputationCallBack);
     }
     Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
         @Override

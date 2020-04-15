@@ -21,7 +21,7 @@ import java.util.Map;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
     private Context context;
-    private Map<String, Boolean> mapBookmark;
+    private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
 
 
@@ -38,21 +38,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageBookmark.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     //filtBoorkmark();
-                    Log.d("mapBookmark", String.valueOf(mapBookmark.size()));
-                    if(!mapBookmark.containsKey(v.getTag())){
-                        mapBookmark.put((String) v.getTag(), false);
-                    }else {
-                        if (mapBookmark.get(v.getTag())
-                        ) {
-                            mapBookmark.put((String) v.getTag(), false);
-
-                        } else {
-                            mapBookmark.put((String) v.getTag(), true);
-                        }
+                    Log.d("mapBookmark", String.valueOf(listBookmark.size()));
+                    UpdateBoorkmark task;
+                    if(listBookmark.contains(v.getTag()))
+                    {
+                        listBookmark.remove(v.getTag());
+                        task = new UpdateBoorkmark((String) v.getTag(), false);
+                    }
+                    else
+                    {
+                        listBookmark.add((String) v.getTag());
+                        task = new UpdateBoorkmark((String) v.getTag(), true);
                     }
                     //chua tim ra cach update 1 itemview
                     notifyDataSetChanged();
-                    UpdateBoorkmark task = new UpdateBoorkmark((String) v.getTag(),  mapBookmark.get(v.getTag()));
                     task.execute(context);
                 }
             });
@@ -63,7 +62,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public RecyclerViewAdapter(Context context, List<User> data) {
         this.listUser = data;
         this.context = context;
-        mapBookmark = new HashMap<>();
+        listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
         LoadBookmarkTask task = new LoadBookmarkTask(this);
         task.execute(context);
@@ -71,6 +70,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             LoadImageTask task2 = new LoadImageTask(this);
             task2.execute(user.srtProfileImageUrl);
         }
+    } public RecyclerViewAdapter(Context context) {
+        this.listUser = new ArrayList<>();
+        this.context = context;
+        listBookmark = new ArrayList<>();
+        mapImage = new HashMap<>();
+        LoadBookmarkTask task = new LoadBookmarkTask(this);
     }
     @NonNull
     @Override
@@ -90,12 +95,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         User user =  listUser.get(position);
         holder.textDisplay.setText(user.toString() );
         holder.itemView.setTag(user.strUserId);
-        //loadImage(holder, user.profile_image);
-        /*if(!mapImage.containsKey(user.profile_image)){
-            LoadImageTask task = new LoadImageTask(this);
-
-            task.execute(user.profile_image);
-        }*/
         holder.imageProfile.setImageBitmap(mapImage.get(user.srtProfileImageUrl));
         holder.imageBookmark.setTag(user.strUserId);
         holder.imageProfile.setTag(user.strUserId);
@@ -103,19 +102,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         // load bookmark
-        if(!mapBookmark.containsKey(user.strUserId)){
-            holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
+        if(listBookmark.contains(user.strUserId)){
+            holder.imageBookmark.setImageResource(R.drawable.bookmark_black);
         }
-        else {
-            if (mapBookmark.get(user.strUserId)){
-                holder.imageBookmark.setImageResource(R.drawable.bookmark_black);
-
-            }
-            else{
-                holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
-
-            }
-
+        else{
+            holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
         }
     }
 
@@ -124,11 +115,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listUser.size();
     }
 
-    public void setMapBookmark(Map<String, Boolean> list){
-        mapBookmark = list;
-    }
-    public void setMapImage(Map<String, Bitmap> list){
-        mapImage = list;
+    public void setListBookmark(List<String> list){
+        listBookmark = list;
     }
     public void addMapImage(String key, Bitmap value){
         mapImage.put(key, value);
@@ -137,12 +125,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     {
         List<User> listBookmarkUsers = new ArrayList<>();
         for (User user:listUser) {
-            if(mapBookmark.containsKey(user.strUserId)) {
-                if (mapBookmark.get(user.strUserId)) {
-                    listBookmarkUsers.add(user);
-                }
+            if(listBookmark.contains(user.strUserId)) {
+                listBookmarkUsers.add(user);
             }
         }
+        Log.d("listBookmark", String.valueOf(listBookmarkUsers));
         listUser.clear();
         listUser.addAll(listBookmarkUsers);
         notifyDataSetChanged();
@@ -150,11 +137,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void notifyLoadImageDone(){
         notifyDataSetChanged();
     }
-    public void setData(List<User> data){
-        this.listUser = data;
+    public List<String> getListBookmark(){
+        return this.listBookmark;
     }
-    public List<User> getData(){
-        return this.listUser;
+    public void addListUser(List<User> list)
+    {
+        listUser.addAll(list);
+        Log.d("List user in adapter", String.valueOf(listUser.size()));
+        for (User user: list) {
+            LoadImageTask task2 = new LoadImageTask(this);
+            task2.execute(user.srtProfileImageUrl);
+        }
     }
 
 }

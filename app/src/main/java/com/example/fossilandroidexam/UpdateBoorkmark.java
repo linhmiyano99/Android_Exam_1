@@ -21,7 +21,12 @@ public class UpdateBoorkmark extends AsyncTask<Context, Void, Void> {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(key, value);
+        if(value) {
+            editor.putBoolean(key, value);
+        }
+        else {
+            editor.remove(key);
+        }
         editor.apply(); // Very important
         return null;
     }

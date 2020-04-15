@@ -7,10 +7,12 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
-public class LoadBookmarkTask extends AsyncTask<Context, Void, Map<String, Boolean>> {
+public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
 
     private RecyclerViewAdapter adapter;
     public LoadBookmarkTask(RecyclerViewAdapter adapter) {
@@ -18,14 +20,20 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, Map<String, Boole
     }
 
     @Override
-    protected Map<String, Boolean> doInBackground(Context... contexts) {
+    protected List<String> doInBackground(Context... contexts) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
-        return (Map<String, Boolean>) sharedPreferences.getAll();
+        List<String> listBookmark = new ArrayList<>();
+        Map<String, Boolean> map = (Map<String, Boolean>) sharedPreferences.getAll();
+        for (Map.Entry<String, Boolean> entry:map.entrySet()
+             ) {
+            listBookmark.add(entry.getKey());
+        }
+        return listBookmark;
     }
     @Override
-    protected void onPostExecute(Map<String,Boolean> result) {
+    protected void onPostExecute(List<String> result) {
         if(result  != null){
-            adapter.setMapBookmark(result);
+            adapter.setListBookmark(result);
             adapter.notifyLoadImageDone();
         } else{
             Log.e("MyMessage", "Failed to fetch data!");
