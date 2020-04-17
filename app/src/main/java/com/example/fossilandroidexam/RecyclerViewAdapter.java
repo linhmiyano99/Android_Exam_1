@@ -70,12 +70,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             LoadImageTask task2 = new LoadImageTask(this);
             task2.execute(user.srtProfileImageUrl);
         }
-    } public RecyclerViewAdapter(Context context) {
+    }
+    public RecyclerViewAdapter(Context context) {
         this.listUser = new ArrayList<>();
         this.context = context;
         listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
         LoadBookmarkTask task = new LoadBookmarkTask(this);
+        task.execute(context);
+
     }
     @NonNull
     @Override
@@ -142,7 +145,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     public void addListUser(List<User> list) {
         listUser.addAll(list);
-        Log.d("List user in adapter", String.valueOf(listUser.size()));
+        Log.d("List user in adapter", String.valueOf(list));
+        /*for (User user: list) {
+            LoadImageTask task2 = new LoadImageTask(this);
+            task2.execute(user.srtProfileImageUrl);
+        }*/
+    }
+    public void addListImage(List<User> list) {
+        //listUser.addAll(list);
+        Log.d("List user image adapter", String.valueOf(list));
         for (User user: list) {
             LoadImageTask task2 = new LoadImageTask(this);
             task2.execute(user.srtProfileImageUrl);

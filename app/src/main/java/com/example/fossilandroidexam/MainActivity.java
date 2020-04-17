@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     boolean isDetails = false;
     boolean isUserPage = true;
     List<User> listUsers ;
+    List<User> listUsersLastPage ;
     List<Reputation> listReputationOfUser;
     int intUserPage;
     int intDetailPage;
@@ -80,10 +81,12 @@ public class MainActivity extends AppCompatActivity {
         });
         listUsers = new ArrayList<>();
         listReputationOfUser = new ArrayList<>();
-        adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
+        listUsersLastPage = new ArrayList<>();
+        adapter = new RecyclerViewAdapter(MainActivity.this);
         adapterReputation = new RecyclerViewAdapterReputation(listReputationOfUser);
 
         createStackoverflowAPI();
+        loadAllUsers();
         loadAllUsers();
 
     }
@@ -98,11 +101,13 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 Log.d("listUsers", String.valueOf(list.size()));
                 //adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
-                listUsers.addAll(list);
-                adapter.addListUser(list);
-                Log.d("adapter", String.valueOf(adapter.getItemCount()));
+                //listUsers.addAll(list);
+                adapter.addListImage(list);
+                adapter.addListUser(listUsersLastPage);
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
                 recyclerView.setAdapter(adapter);
+                listUsersLastPage.clear();
+                listUsersLastPage.addAll(list);
 
             } else {
                 Log.d("usersCallback", "Code: " + response.code() + " Message: " + response.message());
@@ -130,12 +135,12 @@ public class MainActivity extends AppCompatActivity {
         stackoverflowAPI = retrofit.create(StackoverflowAPI.class);
     }
 
-   /* public void loadAllUsers(View view) {
+    public void loadAllUsers(View view) {
         //txtPage.setText("1");
         stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
         isDetails = false;
         isUserPage = true;
-    }*/
+    }
     public void loadAllUsers() {
         stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
         isDetails = false;
