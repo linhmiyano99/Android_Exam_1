@@ -137,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadAllUsers(View view) {
         //txtPage.setText("1");
+        adapterReputation.Reset();
         stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
         isDetails = false;
         isUserPage = true;
@@ -150,11 +151,11 @@ public class MainActivity extends AppCompatActivity {
     public void loadAllBookmarkUsers(View view) {
         //List<String> listBookmark=new ArrayList<String>();
         //listBookmark= adapter.getListBookmark();
-        adapter.filtBoorkmark();
+        //adapter.filtBoorkmark();
 
-        recyclerView.setAdapter(adapter);
-        isDetails = false;
-        isUserPage = false;
+        //recyclerView.setAdapter(adapter);
+        //isDetails = false;
+        //isUserPage = false;
     }
     public void viewDetailUser(View v){
         //txtPage.setText("1");
@@ -176,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                 List<Reputation> list = new ArrayList<>(response.body().items);
                 if(response.body().items.size() == 0)
                     return;
-                listReputationOfUser.addAll(response.body().items);
+                //listReputationOfUser.addAll(response.body().items);
                 adapterReputation.addLisDetail(list);
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
                 recyclerView.setAdapter(adapterReputation);

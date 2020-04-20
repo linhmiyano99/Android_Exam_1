@@ -57,4 +57,7 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         listReputations.addAll(list);
         Log.d("List user in adapter", String.valueOf(listReputations.size()));
     }
+    public void Reset(){
+        listReputations.clear();
+    }
 }
