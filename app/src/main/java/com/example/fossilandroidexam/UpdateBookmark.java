@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Set;
 
 
-public class UpdateBoorkmark extends AsyncTask<Context, Void, List<String>> {
+public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
 
-    //private RecyclerViewAdapter adapter;
+
     private String key;
     private Boolean value;
     private SharedPreferences sharedPreferences;
-    public UpdateBoorkmark( String key, Boolean value) {
+    public UpdateBookmark( String key, Boolean value) {
         this.key = key;
         this.value = value;
     }
@@ -35,17 +35,6 @@ public class UpdateBoorkmark extends AsyncTask<Context, Void, List<String>> {
         editor.apply(); // Very important
 
         return null;
-    }
-
-    @Override
-    protected void onPostExecute(List<String> strings) {
-        List<String> resultList = new ArrayList<>();
-        Set<String> keySet = sharedPreferences.getAll().keySet();
-
-        for (String t:keySet )
-            resultList.add(t);
-
-        super.onPostExecute(resultList);
     }
 }
 

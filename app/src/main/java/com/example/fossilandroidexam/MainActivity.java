@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 
 
 import com.google.gson.Gson;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     List<User> listUsers ;
     List<User> listUsersLastPage ;
     List<Reputation> listReputationOfUser;
+    List <String> listBookmarkStrings;
     int intUserPage;
     int intDetailPage;
     private Parcelable recyclerViewState;
@@ -100,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 if(response.body().items.size() == 0)
                     return;
                 Log.d("listUsers", String.valueOf(list.size()));
-                //adapter = new RecyclerViewAdapter(MainActivity.this, listUsers);
-                //listUsers.addAll(list);
                 adapter.addListImage(list);
                 adapter.addListUser(listUsersLastPage);
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
@@ -148,11 +148,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadAllBookmarkUsers(View view) {
-        //List<String> listBookmark=new ArrayList<String>();
-        //listBookmark= adapter.getListBookmark();
-        adapter.filtBoorkmark();
 
-        recyclerView.setAdapter(adapter);
+        listBookmarkStrings = adapter.getListBookmark();
+        if (listBookmarkStrings!= null ) {
+            for (String listBookmarkString : listBookmarkStrings) {
+                stackoverflowAPI.getUserFromId(listBookmarkString).enqueue(idUserCallBack);
+            }
+
+            adapter.clearListUser();
+            Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
+            adapter.addListImage(listUsers);
+            adapter.addListUser(listUsers);
+            //recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+            listUsers.clear();
+
+
+        } else return;
+
         isDetails = false;
         isUserPage = false;
     }
@@ -192,5 +205,28 @@ public class MainActivity extends AppCompatActivity {
             Log.d("xxxxxx","onFailure");
         }
 
+    };
+    Callback<ListWrapper<User>> idUserCallBack = new Callback<ListWrapper<User>>() {
+
+        @Override
+        public void onResponse(Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                listUsers.add(response.body().items.get(0));
+                Log.d("idUserCallBack",response.body().items.get(0).toString());
+                if (listUsers.size() == listBookmarkStrings.size())
+                {
+                    Log.d("kk","load ");
+
+                }
+            }
+            else return;
+        }
+
+        @Override
+        public void onFailure(Call<ListWrapper<User>> call, Throwable t) {
+            t.printStackTrace();
+            Log.d("xxxxxx","onFailure");
+        }
     };
 }
