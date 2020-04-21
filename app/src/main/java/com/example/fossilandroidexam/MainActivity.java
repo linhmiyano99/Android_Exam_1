@@ -157,13 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             stackoverflowAPI.getUserFromId(groupStringId).enqueue(idUserCallBack);
-            adapter.clearListUser();
-            Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
-            adapter.addListImage(listUsers);
-            adapter.addListUser(listUsers);
-            
-            adapter.notifyDataSetChanged();
-            listUsers.clear();
+
 
         } else return;
 
@@ -214,6 +208,14 @@ public class MainActivity extends AppCompatActivity {
             if (response.isSuccessful()) {
                 if (response.body() != null)
                     listUsers.addAll(response.body().items);
+                else return;
+                adapter.clearListUser();
+                Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
+                adapter.addListImage(listUsers);
+                adapter.addListUser(listUsers);
+
+                adapter.notifyDataSetChanged();
+                listUsers.clear();
             }
             else return;
         }
