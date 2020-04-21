@@ -151,18 +151,19 @@ public class MainActivity extends AppCompatActivity {
 
         listBookmarkStrings = adapter.getListBookmark();
         if (listBookmarkStrings!= null ) {
-            for (String listBookmarkString : listBookmarkStrings) {
-                stackoverflowAPI.getUserFromId(listBookmarkString).enqueue(idUserCallBack);
+            String groupStringId=listBookmarkStrings.get(0);
+            for (int i =1; i < listBookmarkStrings.size(); i++) {
+                groupStringId += ";" + listBookmarkStrings.get(i);
             }
 
+            stackoverflowAPI.getUserFromId(groupStringId).enqueue(idUserCallBack);
             adapter.clearListUser();
             Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
             adapter.addListImage(listUsers);
             adapter.addListUser(listUsers);
-            //recyclerView.setAdapter(adapter);
+            
             adapter.notifyDataSetChanged();
             listUsers.clear();
-
 
         } else return;
 
@@ -211,14 +212,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResponse(Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
-                assert response.body() != null;
-                listUsers.add(response.body().items.get(0));
-                Log.d("idUserCallBack",response.body().items.get(0).toString());
-                if (listUsers.size() == listBookmarkStrings.size())
-                {
-                    Log.d("kk","load ");
-
-                }
+                if (response.body() != null)
+                    listUsers.addAll(response.body().items);
             }
             else return;
         }
