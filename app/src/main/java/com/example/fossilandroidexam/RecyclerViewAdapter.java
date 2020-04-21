@@ -54,6 +54,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     notifyDataSetChanged();
                     task.execute(context);
 
+
+
                 }
             });
 

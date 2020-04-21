@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapter;
+    private RecyclerViewAdapter adapterBookMark;
     private RecyclerViewAdapterReputation adapterReputation;
     boolean isDetails = false;
     boolean isUserPage = true;
@@ -85,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
         listReputationOfUser = new ArrayList<>();
         listUsersLastPage = new ArrayList<>();
         adapter = new RecyclerViewAdapter(MainActivity.this);
+        adapterBookMark = new RecyclerViewAdapter(MainActivity.this);
         adapterReputation = new RecyclerViewAdapterReputation(listReputationOfUser);
 
         createStackoverflowAPI();
@@ -209,12 +211,13 @@ public class MainActivity extends AppCompatActivity {
                 if (response.body() != null)
                     listUsers.addAll(response.body().items);
                 else return;
-                adapter.clearListUser();
+                adapterBookMark.clearListUser();
                 Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
-                adapter.addListImage(listUsers);
-                adapter.addListUser(listUsers);
+                adapterBookMark.addListImage(listUsers);
+                adapterBookMark.addListUser(listUsers);
+                recyclerView.setAdapter(adapterBookMark);
+                adapterBookMark.notifyDataSetChanged();
 
-                adapter.notifyDataSetChanged();
                 listUsers.clear();
             }
             else return;
