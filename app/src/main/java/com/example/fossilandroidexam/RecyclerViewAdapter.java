@@ -1,7 +1,6 @@
 package com.example.fossilandroidexam;
 
 import android.content.Context;
-
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,13 +16,28 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> implements ListBookmarkResponse, ImageResponse {
     private List<User> listUser;
     private Context context;
     private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
     UpdateBookmark task;
+
+    //this override the implemented method from asyncTask
+    @Override
+    public void processListBookmarkFinish(List<String> output) {
+        listBookmark = output;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void processImageFinish(String key, Bitmap image) {
+        mapImage.put(key, image);
+        notifyDataSetChanged();
+
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView textDisplay;
@@ -63,7 +77,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public RecyclerViewAdapter(Context context, List<User> data) {
+  /*  public RecyclerViewAdapter(Context context, List<User> data) {
         this.listUser = data;
         this.context = context;
         listBookmark = new ArrayList<>();
@@ -74,13 +88,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             LoadImageTask task2 = new LoadImageTask(this);
             task2.execute(user.srtProfileImageUrl);
         }
-    }
+    }*/
     public RecyclerViewAdapter(Context context) {
         this.listUser = new ArrayList<>();
         this.context = context;
         listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
-        LoadBookmarkTask task = new LoadBookmarkTask(this);
+        //LoadBookmarkTask task = new LoadBookmarkTask(this);
+        LoadBookmarkTask task = new LoadBookmarkTask();
+        //this to set delegate/listener back to this class
+        task.delegate = this;
         task.execute(context);
 
     }
@@ -122,12 +139,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listUser.size();
     }
 
-    public void setListBookmark(List<String> list){
-        listBookmark = list;
-    }
-    public void addMapImage(String key, Bitmap value){
-        mapImage.put(key, value);
-    }
 
 
     public void clearListUser()
@@ -140,16 +151,36 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<String> getListBookmark(){
         return this.listBookmark;
     }
-    public void addListUser(List<User> list) {
+    public void addListUser(List<User> list) throws ExecutionException, InterruptedException {
         listUser.addAll(list);
-        Log.d("List user in adapter", String.valueOf(list));
+        /*Log.d("List user in adapter", String.valueOf(list));
+        for (User user: list) {
+            String url = user.srtProfileImageUrl;
+            Bitmap image = Glide.
+                    with(context).
+                    asBitmap().
+                    load("http://....").
+                    into(100, 100). // Width and height
+                    get();
+
+
+            mapImage.put(user.strUserId, image);
+        }
+*/
+        for (User user: list
+             ) {
+            LoadImageTask task = new LoadImageTask();
+            task.delegate = this;
+            task.execute(user.srtProfileImageUrl);
+        }
     }
     public void addListImage(List<User> list) {
 
         Log.d("List user image adapter", String.valueOf(list));
         for (User user: list) {
-            LoadImageTask task2 = new LoadImageTask(this);
-            task2.execute(user.srtProfileImageUrl);
+            LoadImageTask task = new LoadImageTask();
+            task.delegate = this;
+            task.execute(user.srtProfileImageUrl);
         }
     }
 

@@ -1,27 +1,24 @@
 package com.example.fossilandroidexam;
 
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+import java.util.concurrent.ExecutionException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     boolean isDetails = false;
     boolean isUserPage = true;
     List<User> listUsers ;
-    List<User> listUsersLastPage ;
     List<Reputation> listReputationOfUser;
     List <String> listBookmarkStrings;
     int intUserPage;
@@ -84,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
         });
         listUsers = new ArrayList<>();
         listReputationOfUser = new ArrayList<>();
-        listUsersLastPage = new ArrayList<>();
         adapter = new RecyclerViewAdapter(MainActivity.this);
         adapterBookMark = new RecyclerViewAdapter(MainActivity.this);
         adapterReputation = new RecyclerViewAdapterReputation(listReputationOfUser);
@@ -104,12 +99,15 @@ public class MainActivity extends AppCompatActivity {
                 if(response.body().items.size() == 0)
                     return;
                 Log.d("listUsers", String.valueOf(list.size()));
-                adapter.addListImage(list);
-                adapter.addListUser(listUsersLastPage);
+                try {
+                    adapter.addListUser(list);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
                 recyclerView.setAdapter(adapter);
-                listUsersLastPage.clear();
-                listUsersLastPage.addAll(list);
 
             } else {
                 Log.d("usersCallback", "Code: " + response.code() + " Message: " + response.message());
@@ -214,7 +212,13 @@ public class MainActivity extends AppCompatActivity {
                 adapterBookMark.clearListUser();
                 Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
                 adapterBookMark.addListImage(listUsers);
-                adapterBookMark.addListUser(listUsers);
+                try {
+                    adapterBookMark.addListUser(listUsers);
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 recyclerView.setAdapter(adapterBookMark);
                 adapterBookMark.notifyDataSetChanged();
 

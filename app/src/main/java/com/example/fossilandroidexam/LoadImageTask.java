@@ -4,7 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,11 +16,10 @@ import okhttp3.Response;
 
 
 public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-    private RecyclerViewAdapter adapter;
     private String key;
+    public ImageResponse delegate = null;
+    public LoadImageTask() {
 
-    public LoadImageTask(RecyclerViewAdapter adapter) {
-        this.adapter = adapter;
     }
 
 
@@ -65,8 +63,7 @@ public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
     @Override
     protected void onPostExecute(Bitmap result) {
         if (result != null) {
-            adapter.addMapImage(key, result);
-            adapter.notifyLoadImageDone();
+            delegate.processImageFinish(key, result);
         } else {
             Log.e("MyMessage", "Failed to fetch data image!");
         }

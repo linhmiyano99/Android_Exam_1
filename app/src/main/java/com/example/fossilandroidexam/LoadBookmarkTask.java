@@ -2,7 +2,6 @@ package com.example.fossilandroidexam;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -13,10 +12,12 @@ import java.util.Map;
 
 
 public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
-
-    private RecyclerViewAdapter adapter;
-    public LoadBookmarkTask(RecyclerViewAdapter adapter) {
+    public ListBookmarkResponse delegate = null;
+    //private RecyclerViewAdapter adapter;
+   /* public LoadBookmarkTask(RecyclerViewAdapter adapter) {
         this.adapter = adapter;
+    }*/
+    public LoadBookmarkTask() {
     }
 
     @Override
@@ -33,8 +34,9 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> result) {
         if(result  != null){
-            adapter.setListBookmark(result);
-            adapter.notifyLoadImageDone();
+            //adapter.setListBookmark(result);
+            //adapter.notifyLoadImageDone();
+            delegate.processListBookmarkFinish(result);
         } else{
             Log.e("MyMessage", "Failed to fetch data!");
         }
