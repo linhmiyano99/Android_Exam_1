@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<RecyclerViewAdapterReputation.ViewHolder> {
@@ -23,8 +24,8 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public RecyclerViewAdapterReputation(List<Reputation> data) {
-       this.listReputations = data;
+    public RecyclerViewAdapterReputation() {
+        listReputations = new ArrayList<>();
     }
 
     @NonNull
@@ -56,5 +57,8 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     public void addLisDetail(List<Reputation> list) {
         listReputations.addAll(list);
         Log.d("List user in adapter", String.valueOf(listReputations.size()));
+    }
+    public void clear() {
+        listReputations.clear();
     }
 }

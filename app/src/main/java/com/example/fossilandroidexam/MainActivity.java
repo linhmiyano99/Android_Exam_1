@@ -34,9 +34,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapterReputation adapterReputation;
     boolean isDetails = false;
     boolean isUserPage = true;
-    List<User> listUsers ;
+/*    List<User> listUsers ;
     List<Reputation> listReputationOfUser;
-    List <String> listBookmarkStrings;
+    List <String> listBookmarkStrings;*/
+
     int intUserPage;
     int intDetailPage;
     private Parcelable recyclerViewState;
@@ -78,11 +79,10 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        listUsers = new ArrayList<>();
-        listReputationOfUser = new ArrayList<>();
+
         adapter = new RecyclerViewAdapter(MainActivity.this);
         adapterBookMark = new RecyclerViewAdapter(MainActivity.this);
-        adapterReputation = new RecyclerViewAdapterReputation(listReputationOfUser);
+        adapterReputation = new RecyclerViewAdapterReputation();
 
         createStackoverflowAPI();
         loadAllUsers();
@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadAllBookmarkUsers(View view) {
-
+        List <String> listBookmarkStrings;
         listBookmarkStrings = adapter.getListBookmark();
         if (listBookmarkStrings!= null ) {
             String groupStringId=listBookmarkStrings.get(0);
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
     public void viewDetailUser(View v){
         //txtPage.setText("1");
         intDetailPage =1;
+        adapterReputation.clear();
         userId = String.valueOf(v.getTag());
         viewDetailUser(userId);
     }
@@ -184,7 +185,6 @@ public class MainActivity extends AppCompatActivity {
                 List<Reputation> list = new ArrayList<>(response.body().items);
                 if(response.body().items.size() == 0)
                     return;
-                listReputationOfUser.addAll(response.body().items);
                 adapterReputation.addLisDetail(list);
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
                 recyclerView.setAdapter(adapterReputation);
@@ -206,14 +206,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResponse(Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
-                if (response.body() != null)
-                    listUsers.addAll(response.body().items);
-                else return;
-                adapterBookMark.clearListUser();
-                Log.d("LoadBooKmarkUser", String.valueOf(listUsers.size()));
-                adapterBookMark.addListImage(listUsers);
+                List<User> list = new ArrayList<>(response.body().items);
+                if(response.body().items.size() == 0)
+                    return;
                 try {
-                    adapterBookMark.addListUser(listUsers);
+                    adapterBookMark.addListUser(list);
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
@@ -222,7 +219,6 @@ public class MainActivity extends AppCompatActivity {
                 recyclerView.setAdapter(adapterBookMark);
                 adapterBookMark.notifyDataSetChanged();
 
-                listUsers.clear();
             }
             else return;
         }
