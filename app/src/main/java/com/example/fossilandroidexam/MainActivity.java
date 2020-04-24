@@ -34,10 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapterReputation adapterReputation;
     boolean isDetails = false;
     boolean isUserPage = true;
-/*    List<User> listUsers ;
-    List<Reputation> listReputationOfUser;
-    List <String> listBookmarkStrings;*/
-
     int intUserPage;
     int intDetailPage;
     private Parcelable recyclerViewState;
@@ -170,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         adapterReputation.clear();
         userId = String.valueOf(v.getTag());
         viewDetailUser(userId);
+
     }
     public void viewDetailUser(String userId){
         Log.d("viewDetailUser", String.valueOf(intDetailPage));

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,11 +44,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         public TextView textDisplay;
         public ImageView imageProfile;
         public ImageView imageBookmark;
+        public LinearLayout linearLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             textDisplay = itemView.findViewById(R.id.displayInfo);
             imageProfile = itemView.findViewById(R.id.profile_image);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
             imageBookmark = itemView.findViewById(R.id.bookmark);
             imageBookmark.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -72,8 +75,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                 }
             });
-
-        }
+     /*       linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    userId = ;
+                    viewDetailUser(userId);
+                }*/
+            }
     }
 
 
@@ -121,9 +129,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setTag(user.strUserId);
         holder.imageProfile.setImageBitmap(mapImage.get(user.srtProfileImageUrl));
         holder.imageBookmark.setTag(user.strUserId);
-        holder.imageProfile.setTag(user.strUserId);
-        holder.textDisplay.setTag(user.strUserId);
-
+        holder.linearLayout.setTag(user.strUserId);
 
         // load bookmark
         if(listBookmark.contains(user.strUserId)){
