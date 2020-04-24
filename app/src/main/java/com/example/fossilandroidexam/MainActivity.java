@@ -29,9 +29,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class MainActivity extends AppCompatActivity {
     private StackoverflowAPI stackoverflowAPI;
     private RecyclerView recyclerView;
-    private RecyclerViewAdapter adapter;
-    private RecyclerViewAdapter adapterBookMark;
-    private RecyclerViewAdapterReputation adapterReputation;
+    private RecyclerViewAdapter adapterOfUsers;
+    private RecyclerViewAdapter adapterOfBookMarkUsers;
+    private RecyclerViewAdapterReputation adapterReputations;
     boolean isDetails = false;
     boolean isUserPage = true;
     int intUserPage;
@@ -63,26 +63,25 @@ public class MainActivity extends AppCompatActivity {
                         Log.d("isUserPage", String.valueOf(intUserPage));
 
                         recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
-                        loadAllUsers();
+                        loadAllUsersOfNextPage();
                     }
                     else if(isDetails){
                         Log.d("isDetails", String.valueOf(intDetailPage));
 
                         recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
-                        viewDetailUser(userId);
+                        viewDetailsOfUser(userId);
                     }
                 }
 
             }
         });
 
-        adapter = new RecyclerViewAdapter(MainActivity.this);
-        adapterBookMark = new RecyclerViewAdapter(MainActivity.this);
-        adapterReputation = new RecyclerViewAdapterReputation();
+        adapterOfUsers = new RecyclerViewAdapter(MainActivity.this);
+        adapterOfBookMarkUsers = new RecyclerViewAdapter(MainActivity.this);
+        adapterReputations = new RecyclerViewAdapterReputation();
 
         createStackoverflowAPI();
-        loadAllUsers();
-        loadAllUsers();
+        loadAllUsersOfNextPage();
 
     }
 
@@ -96,14 +95,12 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 Log.d("listUsers", String.valueOf(list.size()));
                 try {
-                    adapter.addListUser(list);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                    adapterOfUsers.addListUser(list);
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
-                recyclerView.setAdapter(adapter);
+                recyclerView.setAdapter(adapterOfUsers);
 
             } else {
                 Log.d("usersCallback", "Code: " + response.code() + " Message: " + response.message());
@@ -131,13 +128,15 @@ public class MainActivity extends AppCompatActivity {
         stackoverflowAPI = retrofit.create(StackoverflowAPI.class);
     }
 
-    public void loadAllUsers(View view) {
+    public void loadAllUsersOfNextPage(View view) {
         //txtPage.setText("1");
-        stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
+        //stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
+        recyclerView.setAdapter(adapterOfUsers);
+
         isDetails = false;
         isUserPage = true;
     }
-    public void loadAllUsers() {
+    public void loadAllUsersOfNextPage() {
         stackoverflowAPI.getAllUsers(intUserPage++).enqueue(usersCallback);
         isDetails = false;
         isUserPage = true;
@@ -145,14 +144,14 @@ public class MainActivity extends AppCompatActivity {
 
     public void loadAllBookmarkUsers(View view) {
         List <String> listBookmarkStrings;
-        listBookmarkStrings = adapter.getListBookmark();
+        listBookmarkStrings = adapterOfUsers.getListBookmark();
         if (listBookmarkStrings!= null ) {
-            String groupStringId=listBookmarkStrings.get(0);
+            StringBuilder groupStringId= new StringBuilder(listBookmarkStrings.get(0));
             for (int i =1; i < listBookmarkStrings.size(); i++) {
-                groupStringId += ";" + listBookmarkStrings.get(i);
+                groupStringId.append(";").append(listBookmarkStrings.get(i));
             }
 
-            stackoverflowAPI.getUserFromId(groupStringId).enqueue(idUserCallBack);
+            stackoverflowAPI.getUserFromId(groupStringId.toString()).enqueue(idUserCallBack);
 
 
         } else return;
@@ -160,15 +159,15 @@ public class MainActivity extends AppCompatActivity {
         isDetails = false;
         isUserPage = false;
     }
-    public void viewDetailUser(View v){
+    public void viewDetailsOfUser(View v){
         //txtPage.setText("1");
         intDetailPage =1;
-        adapterReputation.clear();
+        adapterReputations.clear();
         userId = String.valueOf(v.getTag());
-        viewDetailUser(userId);
+        viewDetailsOfUser(userId);
 
     }
-    public void viewDetailUser(String userId){
+    public void viewDetailsOfUser(String userId){
         Log.d("viewDetailUser", String.valueOf(intDetailPage));
         isUserPage = false;
         isDetails = true;
@@ -182,9 +181,9 @@ public class MainActivity extends AppCompatActivity {
                 List<Reputation> list = new ArrayList<>(response.body().items);
                 if(response.body().items.size() == 0)
                     return;
-                adapterReputation.addLisDetail(list);
+                adapterReputations.addLisDetail(list);
                 Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
-                recyclerView.setAdapter(adapterReputation);
+                recyclerView.setAdapter(adapterReputations);
                 Log.d("reputationCallBack", String.valueOf(intDetailPage));
             } else {
                 Log.d("reputationCallBack", "Code: " + response.code() + " Message: " + response.message());
@@ -201,27 +200,25 @@ public class MainActivity extends AppCompatActivity {
     Callback<ListWrapper<User>> idUserCallBack = new Callback<ListWrapper<User>>() {
 
         @Override
-        public void onResponse(Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
+        public void onResponse(@NotNull Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {
+                assert response.body() != null;
                 List<User> list = new ArrayList<>(response.body().items);
                 if(response.body().items.size() == 0)
                     return;
                 try {
-                    adapterBookMark.addListUser(list);
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
+                    adapterOfBookMarkUsers.addListUser(list);
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
-                recyclerView.setAdapter(adapterBookMark);
-                adapterBookMark.notifyDataSetChanged();
+                recyclerView.setAdapter(adapterOfBookMarkUsers);
+                adapterOfBookMarkUsers.notifyDataSetChanged();
 
             }
-            else return;
         }
 
         @Override
-        public void onFailure(Call<ListWrapper<User>> call, Throwable t) {
+        public void onFailure(@NotNull Call<ListWrapper<User>> call, Throwable t) {
             t.printStackTrace();
             Log.d("xxxxxx","onFailure");
         }

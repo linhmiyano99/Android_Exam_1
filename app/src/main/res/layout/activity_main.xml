@@ -15,13 +15,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/all_user"
-            android:onClick="loadAllUsers"/>
+            android:onClick="loadAllUsersOfNextPage"
+            tools:ignore="ButtonStyle" />
         <Button
             android:id="@+id/btnAllBoorkmarkUsers"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/bookmark_user"
-            android:onClick="loadAllBookmarkUsers"/>
+            android:onClick="loadAllBookmarkUsers"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"

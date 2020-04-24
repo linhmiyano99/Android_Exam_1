@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     android:padding="6dip"
@@ -14,18 +15,21 @@
         android:src="@drawable/bookmark_border"
         android:clickable="true"
         android:focusable="true"
-        />
+        tools:ignore="RtlHardcoded"
+        android:contentDescription="@string/nothing" />
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:onClick="viewDetailUser">
+        android:onClick="viewDetailsOfUser"
+        tools:ignore="UseCompoundDrawables">
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_launcher"/>
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="@string/nothing" />
         <TextView
             android:id="@+id/displayInfo"
             android:layout_width="wrap_content"

@@ -1,7 +1,9 @@
 package com.example.fossilandroidexam;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +33,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context context;
     private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
-    UpdateBookmark task;
 
     //this override the implemented method from asyncTask
     @Override
@@ -56,6 +64,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 public void onClick(View v) {
                     //filtBoorkmark();
                     Log.d("mapBookmark", String.valueOf(listBookmark.size()));
+                    UpdateBookmark task;
 
                     if(listBookmark.contains(v.getTag()))
                     {
@@ -157,22 +166,31 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public List<String> getListBookmark(){
         return this.listBookmark;
     }
+    @SuppressLint("CheckResult")
     public void addListUser(List<User> list) throws ExecutionException, InterruptedException {
         listUser.addAll(list);
-        /*Log.d("List user in adapter", String.valueOf(list));
-        for (User user: list) {
-            String url = user.srtProfileImageUrl;
-            Bitmap image = Glide.
-                    with(context).
-                    asBitmap().
-                    load("http://....").
-                    into(100, 100). // Width and height
-                    get();
+        Log.d("List user in adapter", String.valueOf(list));
+        /*for (final User user: list
+             ) {
+            Glide.with(context).
+                    load(user.srtProfileImageUrl)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            Log.d("Glide", "onLoadFailed");
+                            return false;
+                        }
 
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            Log.d("Glide", "onResourceReady");
 
-            mapImage.put(user.strUserId, image);
-        }
-*/
+                            mapImage.put(user.strUserId, (Drawable) target);
+                            notifyDataSetChanged();
+                            return true;
+                        }
+                    });
+        }*/
         for (User user: list
              ) {
             LoadImageTask task = new LoadImageTask();
@@ -180,6 +198,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             task.execute(user.srtProfileImageUrl);
         }
     }
+/*
     public void addListImage(List<User> list) {
 
         Log.d("List user image adapter", String.valueOf(list));
@@ -189,5 +208,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             task.execute(user.srtProfileImageUrl);
         }
     }
+*/
 
 }

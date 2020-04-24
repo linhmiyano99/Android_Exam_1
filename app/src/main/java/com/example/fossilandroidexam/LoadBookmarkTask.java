@@ -13,12 +13,7 @@ import java.util.Map;
 
 public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     public ListBookmarkResponse delegate = null;
-    //private RecyclerViewAdapter adapter;
-   /* public LoadBookmarkTask(RecyclerViewAdapter adapter) {
-        this.adapter = adapter;
-    }*/
-    public LoadBookmarkTask() {
-    }
+
 
     @Override
     protected List<String> doInBackground(Context... contexts) {

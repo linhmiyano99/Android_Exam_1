@@ -12,7 +12,6 @@ import java.util.Set;
 
 public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
 
-
     private String key;
     private Boolean value;
     private SharedPreferences sharedPreferences;
