@@ -1,5 +1,7 @@
-package com.example.fossilandroidexam;
+package com.example.fossilandroidexam.model.StackoverflowService;
 
+
+import com.example.fossilandroidexam.model.ListWrapper;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
@@ -13,9 +15,9 @@ public interface StackoverflowAPI {
     Call<ListWrapper<User>> getAllUsers(@Query("page") int numberOfPage);
 
     @GET("/2.2/users/{ids}?order=desc&sort=reputation&site=stackoverflow")
-    Call<ListWrapper<User>> getUserFromId(@Path("ids") String userId);
+    Call<ListWrapper<User>> getUserFromId(@Path("ids") StringBuilder userId);
 
     @GET("2.2/users/{userId}/reputation-history?pagesize=30&site=stackoverflow")
-    Call<ListWrapper<Reputation>> getReputationForUser(@Path("userId") String userId,@Query("page") int numberOfPage);
+    Call<ListWrapper<Reputation>> getReputationForUser(@Path("userId") String userId, @Query("page") int numberOfPage);
 
 }

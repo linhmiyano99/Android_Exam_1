@@ -1,6 +1,8 @@
-package com.example.fossilandroidexam;
+package com.example.fossilandroidexam.model.StackoverflowService;
 
 import com.google.gson.annotations.SerializedName;
+
+import org.jetbrains.annotations.NotNull;
 
 public class Reputation {
     @SerializedName("reputation_history_type")
@@ -13,6 +15,7 @@ public class Reputation {
     public String strPostId;
     @SerializedName("user_id")
     public String strUserId;
+    @NotNull
     @Override
     public String toString() {
         return  "Reputation Type: " +strReputationHistoryType

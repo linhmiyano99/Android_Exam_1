@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam;
+package com.example.fossilandroidexam.model.ImageDatabase;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,9 +19,7 @@ public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
     private String key;
     public ImageResponse delegate = null;
     public LoadImageTask() {
-
     }
-
 
     @Override
     protected Bitmap doInBackground(String... params) {

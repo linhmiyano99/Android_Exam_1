@@ -1,13 +1,11 @@
-package com.example.fossilandroidexam;
+package com.example.fossilandroidexam.model.BookmarkDatabase;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 
 public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {

@@ -1,8 +1,8 @@
-package com.example.fossilandroidexam;
+package com.example.fossilandroidexam.model;
 
 import java.util.List;
 
 // Because callback<T>
 public class ListWrapper<T> {
-    List<T> items;
+    public List<T> items;
 }

@@ -1,5 +1,6 @@
-package com.example.fossilandroidexam;
+package com.example.fossilandroidexam.view.adapter;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,14 +8,26 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.fossilandroidexam.R;
+import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
+import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<RecyclerViewAdapterReputation.ViewHolder> {
 
-    List<Reputation> listReputations;
+    private List<Reputation> listReputations;
+    private StackoverflowViewModel viewModel;
+    private int intDetailPage;
+    private String userId;
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtDetail;
@@ -24,8 +37,16 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public RecyclerViewAdapterReputation() {
+    public RecyclerViewAdapterReputation(Context context, StackoverflowViewModel viewModel) {
         listReputations = new ArrayList<>();
+        intDetailPage = 1;
+        this.viewModel = viewModel;
+        this.viewModel.getListReputation().observe((LifecycleOwner) context, new Observer<List<Reputation>>() {
+            @Override
+            public void onChanged(List<Reputation> reputations) {
+                addLisDetail(reputations);
+            }
+        });
     }
 
     @NonNull
@@ -41,7 +62,6 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         return new ViewHolder(view) ;
     }
 
-    @NonNull
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapterReputation.ViewHolder holder, int position) {
         Reputation reputation =  listReputations.get(position);
@@ -56,9 +76,21 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     }
     public void addLisDetail(List<Reputation> list) {
         listReputations.addAll(list);
+        notifyDataSetChanged();
         Log.d("List user in adapter", String.valueOf(listReputations.size()));
     }
     public void clear() {
         listReputations.clear();
+    }
+    public void loadDetailOfUser(){
+        viewModel.loadDetailsOfUserOfPage(userId, intDetailPage++);
+
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+    public void resetDetailPage(){
+        intDetailPage = 1;
     }
 }
