@@ -12,8 +12,11 @@ import java.util.Map;
 
 
 public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
-    public ListBookmarkResponse delegate = null;
+    private ListBookmarkResponse delegate = null;
 
+    public void setDelegate(ListBookmarkResponse delegate) {
+        this.delegate = delegate;
+    }
 
     @Override
     protected List<String> doInBackground(Context... contexts) {

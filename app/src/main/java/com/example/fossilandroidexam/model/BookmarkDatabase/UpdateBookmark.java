@@ -12,8 +12,8 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
 
     private String key;
     private Boolean value;
-    private SharedPreferences sharedPreferences;
-    public UpdateBookmark( String key, Boolean value) {
+
+    public UpdateBookmark(String key, Boolean value) {
         this.key = key;
         this.value = value;
     }
@@ -21,7 +21,7 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
 
     @Override
     protected List<String> doInBackground(Context... contexts) {
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if(value) {
             editor.putBoolean(key, value);

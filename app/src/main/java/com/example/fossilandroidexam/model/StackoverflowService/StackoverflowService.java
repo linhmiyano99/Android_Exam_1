@@ -5,6 +5,7 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.fossilandroidexam.model.ImageDatabase.ImageDatabase;
 import com.example.fossilandroidexam.model.ListWrapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,10 +23,19 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StackoverflowService {
     private StackoverflowAPI stackoverflowAPI;
-    private MutableLiveData<List<User>> listUsers;
-    private MutableLiveData<List<User>> listBookmarkUsers;
-    private MutableLiveData<List<Reputation>> listReputation;
-    public StackoverflowService() {
+    private MutableLiveData listUsers;
+    private MutableLiveData listBookmarkUsers;
+    private MutableLiveData listReputation;
+    private static StackoverflowService INSTANCE;
+    public static StackoverflowService getStackoverflowService()
+    {
+        if(INSTANCE == null)
+        {
+            INSTANCE = new StackoverflowService();
+        }
+        return  INSTANCE;
+    }
+    private StackoverflowService() {
         listUsers = new MutableLiveData();
         listBookmarkUsers = new MutableLiveData();
         listReputation = new MutableLiveData();
@@ -44,11 +54,8 @@ public class StackoverflowService {
         stackoverflowAPI = retrofit.create(StackoverflowAPI.class);
     }
 
-    public StackoverflowAPI getStackoverflowAPI() {
-        return stackoverflowAPI;
-    }
 
-    Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
+    private Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
         @Override
         public void onResponse(@NotNull Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
             if (response.isSuccessful()) {
@@ -69,7 +76,7 @@ public class StackoverflowService {
         }
 
     };
-    Callback<ListWrapper<User>> idUserCallBack = new Callback<ListWrapper<User>>() {
+    private Callback<ListWrapper<User>> idUserCallBack = new Callback<ListWrapper<User>>() {
 
         @Override
         public void onResponse(@NotNull Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
@@ -89,7 +96,7 @@ public class StackoverflowService {
         }
     };
 
-    Callback<ListWrapper<User>> usersCallback = new Callback<ListWrapper<User>> () {
+    private Callback<ListWrapper<User>> usersCallback = new Callback<ListWrapper<User>> () {
         @Override
         public void onResponse(@NotNull Call<ListWrapper<User>> call, Response<ListWrapper<User>> response) {
             if (response.isSuccessful()) {

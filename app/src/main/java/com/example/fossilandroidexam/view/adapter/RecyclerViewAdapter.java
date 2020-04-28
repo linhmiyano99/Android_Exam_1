@@ -2,6 +2,7 @@ package com.example.fossilandroidexam.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,13 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
+import com.example.fossilandroidexam.view.activity.DetailOfUserActivity;
 import com.example.fossilandroidexam.view.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
@@ -37,13 +38,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     //this override the implemented method from asyncTask
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textDisplay;
-        public ImageView imageProfile;
-        public ImageView imageBookmark;
-        public LinearLayout linearLayout;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textDisplay;
+        ImageView imageProfile;
+        ImageView imageBookmark;
+        LinearLayout linearLayout;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             textDisplay = itemView.findViewById(R.id.displayInfo);
             imageProfile = itemView.findViewById(R.id.profile_image);
@@ -51,9 +52,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.resetDetailPage();
-                    context.viewDetailsOfUser((String) v.getTag());
-                    context.setDetails();
+                    Intent intent = new Intent(context, DetailOfUserActivity.class);
+                    intent.putExtra("userId", (String) v.getTag());
+                    context.startActivity(intent);
                 }
             });
             imageBookmark = itemView.findViewById(R.id.bookmark);
@@ -88,11 +89,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.viewModel.getListUsers().observe((LifecycleOwner) context, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
-                try {
-                    addListUser(users);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+                addListUser(users);
+                intUserPage++;
             }
         });
         listBookmark = new ArrayList<>();
@@ -147,12 +145,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listUser.size();
     }
 
-    public List<String> getListBookmark() {
-        return this.listBookmark;
-    }
+
 
     @SuppressLint("CheckResult")
-    public void addListUser(List<User> list) throws ExecutionException, InterruptedException {
+    private void addListUser(List<User> list) {
         listUser.addAll(list);
         Log.d("List user in adapter", String.valueOf(list));
         for (User user : list
@@ -166,7 +162,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         viewModel.loadBookmarkUser(listBookmark);
     }
     public void loadUserOfPage(){
-        viewModel.loadAllUsersOfPage(intUserPage++);
+        viewModel.loadAllUsersOfPage(intUserPage);
     }
 }
 

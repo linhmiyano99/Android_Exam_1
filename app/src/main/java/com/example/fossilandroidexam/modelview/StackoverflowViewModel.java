@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 
 public class StackoverflowViewModel extends AndroidViewModel {
-    StackoverflowService service;
-    BookmarkDatabase bookmarkDatabase;
-    ImageDatabase imageDatabase;
+    private StackoverflowService service;
+    private BookmarkDatabase bookmarkDatabase;
+    private ImageDatabase imageDatabase;
     private LiveData<List<User>> listUsers;
     private LiveData<List<User>> listBookmarkUsers;
     private LiveData<List<Reputation>> listReputation;
@@ -29,9 +29,9 @@ public class StackoverflowViewModel extends AndroidViewModel {
 
     public StackoverflowViewModel(Application application) {
         super(application);
-        service = new StackoverflowService();
-        bookmarkDatabase = new BookmarkDatabase(application);
-        imageDatabase = new ImageDatabase();
+        service = StackoverflowService.getStackoverflowService();
+        bookmarkDatabase = BookmarkDatabase.getBookmarkDatabase(application);
+        imageDatabase = ImageDatabase.getImageDatabase();
         listUsers = service.getListUsers();
         listBookmarkUsers = service.getListBookmarkUsers();
         listReputation = service.getListReputation();

@@ -2,6 +2,8 @@ package com.example.fossilandroidexam.model.StackoverflowService;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.jetbrains.annotations.NotNull;
+
 public class User {
     @SerializedName("display_name")
     public String strDisplayName;
@@ -15,6 +17,7 @@ public class User {
     @SerializedName("user_id")
     public String strUserId;
 
+    @NotNull
     @Override
     public String toString() {
         return  strDisplayName

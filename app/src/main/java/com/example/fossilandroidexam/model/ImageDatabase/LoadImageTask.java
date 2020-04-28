@@ -17,8 +17,10 @@ import okhttp3.Response;
 
 public class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
     private String key;
-    public ImageResponse delegate = null;
-    public LoadImageTask() {
+    private ImageResponse delegate = null;
+
+    public void setDelegate(ImageResponse delegate) {
+        this.delegate = delegate;
     }
 
     @Override

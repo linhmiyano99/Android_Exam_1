@@ -15,7 +15,6 @@ import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterBookmark;
-import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterReputation;
 
 
 import java.util.Objects;
@@ -25,12 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapterOfUsers;
     private RecyclerViewAdapterBookmark adapterOfBookMarkUsers;
-    private RecyclerViewAdapterReputation adapterReputations;
-    boolean isDetails = false;
     boolean isUserPage = true;
-    private String userId;
-    private Button btnLoadAllBookmarkUser;
-
 
 
     @Override
@@ -53,17 +47,12 @@ public class MainActivity extends AppCompatActivity {
 
                         loadAllUsersOfNextPage();
                     }
-                    else if(isDetails){
-
-                        viewDetailsOfUser(userId);
-                    }
                 }
             }
         });
 
         adapterOfUsers = new RecyclerViewAdapter(MainActivity.this, viewModel);
         adapterOfBookMarkUsers = new RecyclerViewAdapterBookmark(MainActivity.this, viewModel);
-        adapterReputations = new RecyclerViewAdapterReputation(MainActivity.this, viewModel);
         Button btnLoadUserAvailable = findViewById(R.id.btnAllUsers);
         btnLoadUserAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 setUserPage();
             }
         });
-        btnLoadAllBookmarkUser = findViewById(R.id.btnAllBoorkmarkUsers);
+        Button btnLoadAllBookmarkUser = findViewById(R.id.btnAllBoorkmarkUsers);
         btnLoadAllBookmarkUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,38 +75,21 @@ public class MainActivity extends AppCompatActivity {
         adapterOfUsers.loadUserOfPage();
         setUserPage();
     }
-    public void viewDetailsOfUser(String userId){
-        adapterReputations.setUserId(userId);
-        adapterReputations.loadDetailOfUser();
-        this.userId = userId;
-    }
 
     @Override
     public void onBackPressed() {
         Log.d("CDA", "onBackPressed Called");
         recyclerView.setAdapter(adapterOfUsers);
-        isDetails = false;
         isUserPage = true;
     }
 
-    public void setDetails() {
-        isDetails = true;
-        isUserPage = false;
-        recyclerView.setAdapter(adapterReputations);
-    }
 
     public void setUserPage() {
         isUserPage = true;
-        isDetails = false;
         recyclerView.setAdapter(adapterOfUsers);
     }
     public void setBookmark(){
         isUserPage = false;
-        isDetails = false;
         recyclerView.setAdapter(adapterOfBookMarkUsers);
-    }
-    public void resetDetailPage(){
-        adapterReputations.resetDetailPage();
-        adapterReputations.clear();
     }
 }

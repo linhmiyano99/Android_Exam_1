@@ -24,23 +24,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerViewAdapterBookmark.ViewHolder>{
     private List<User> listUser;
-    private Context context;
     private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
     private StackoverflowViewModel viewModel;
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView textDisplay;
-        public ImageView imageProfile;
-        public ImageView imageBookmark;
-        public LinearLayout linearLayout;
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textDisplay;
+        ImageView imageProfile;
+        ImageView imageBookmark;
+        LinearLayout linearLayout;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             textDisplay = itemView.findViewById(R.id.displayInfo);
             imageProfile = itemView.findViewById(R.id.profile_image);
@@ -75,7 +73,6 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
 
     public RecyclerViewAdapterBookmark(Context context, StackoverflowViewModel viewModel) {
         this.listUser = new ArrayList<>();
-        this.context = context;
         listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
         this.viewModel = viewModel;
@@ -83,12 +80,10 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onChanged(List<User> users) {
                 Log.d("getListBookmarkUsers", String.valueOf(users));
-                try {
+
                     clearListUser();
                     addListUser(users);
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                }
+
             }
         });
         this.viewModel.getListbookmark().observe((LifecycleOwner) context, new Observer<List<String>>() {
@@ -140,23 +135,15 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     }
 
 
-    public void clearListUser() {
+    private void clearListUser() {
         listUser.clear();
     }
 
-    public void notifyAdapterChange() {
-        notifyDataSetChanged();
-    }
-
-    public List<String> getListBookmark() {
-        return this.listBookmark;
-    }
 
     @SuppressLint("CheckResult")
-    public void addListUser(List<User> list) throws ExecutionException, InterruptedException {
+    private void addListUser(List<User> list){
         listUser.addAll(list);
         Log.d("List user in adapter", String.valueOf(list));
-        String url;
         for (User user : list
         ) {
             if(mapImage.containsKey(user.srtProfileImageUrl))

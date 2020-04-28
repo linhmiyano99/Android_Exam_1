@@ -29,9 +29,9 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
 
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtDetail;
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtDetail = itemView.findViewById(R.id.txtDetail);
         }
@@ -44,7 +44,9 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         this.viewModel.getListReputation().observe((LifecycleOwner) context, new Observer<List<Reputation>>() {
             @Override
             public void onChanged(List<Reputation> reputations) {
-                addLisDetail(reputations);
+                listReputations.addAll(reputations);
+                intDetailPage++;
+                notifyDataSetChanged();
             }
         });
     }
@@ -58,7 +60,6 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
                 inflater.inflate(R.layout.item_recyclerview_reputation, parent, false);
         // Get the app's shared preferences
 
-
         return new ViewHolder(view) ;
     }
 
@@ -67,6 +68,7 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         Reputation reputation =  listReputations.get(position);
         holder.txtDetail.setText(reputation.toString());
         holder.itemView.setTag(reputation.strUserId);
+        Log.d(reputation.strUserId, String.valueOf(reputation));
 
     }
 
@@ -74,14 +76,7 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     public int getItemCount() {
         return listReputations.size();
     }
-    public void addLisDetail(List<Reputation> list) {
-        listReputations.addAll(list);
-        notifyDataSetChanged();
-        Log.d("List user in adapter", String.valueOf(listReputations.size()));
-    }
-    public void clear() {
-        listReputations.clear();
-    }
+
     public void loadDetailOfUser(){
         viewModel.loadDetailsOfUserOfPage(userId, intDetailPage++);
 
@@ -89,8 +84,5 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-    public void resetDetailPage(){
-        intDetailPage = 1;
     }
 }

@@ -22,18 +22,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:onClick="viewDetailsOfUser"
-        tools:ignore="UseCompoundDrawables">
+        android:clickable="true"
+        tools:ignore="UseCompoundDrawables"
+        android:focusable="true">
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_launcher"
+            android:clickable="false"
             android:contentDescription="@string/nothing" />
         <TextView
             android:id="@+id/displayInfo"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:clickable="false"
             android:textSize="16sp"/>
 
     </LinearLayout>

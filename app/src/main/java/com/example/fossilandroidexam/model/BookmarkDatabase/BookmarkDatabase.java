@@ -12,7 +12,17 @@ public class BookmarkDatabase implements ListBookmarkResponse {
     private MutableLiveData<List<String>> listBookmark; // use MutableLiveData to update data
     private Context context;
 
-    public BookmarkDatabase(Application application) {
+    private static BookmarkDatabase INSTANCE;
+    public static BookmarkDatabase getBookmarkDatabase(Application application)
+    {
+        if(INSTANCE == null)
+        {
+            INSTANCE = new BookmarkDatabase(application);
+        }
+        return  INSTANCE;
+    }
+
+    private BookmarkDatabase(Application application) {
         this.context = application.getApplicationContext();
         listBookmark = new MutableLiveData<>();
         updateBookmarkData();
@@ -22,18 +32,14 @@ public class BookmarkDatabase implements ListBookmarkResponse {
         return listBookmark;
     }
 
-    public void setListBookmark(MutableLiveData<List<String>> listBookmark) {
-        this.listBookmark = listBookmark;
-    }
-
     @Override
     public void processListBookmarkFinish(List<String> output) {
             listBookmark.setValue(output);
     }
-    public void updateBookmarkData() {
+    private void updateBookmarkData() {
         LoadBookmarkTask task = new LoadBookmarkTask();
         //this to set delegate / listener back to this class
-        task.delegate = this;
+        task.setDelegate(this);
         task.execute(context);
     }
     public void updateAUserOfBookmarkData(String key, Boolean value){
