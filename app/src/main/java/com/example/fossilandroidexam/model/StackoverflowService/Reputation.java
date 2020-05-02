@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class Reputation {
     @SerializedName("reputation_history_type")
-    public String strReputationHistoryType;
+    private String strReputationHistoryType;
     @SerializedName("reputation_change")
-    public String strReputationChange;
+    private String strReputationChange;
     @SerializedName("creation_date")
-    public String strCreateDate;
+    private String strCreateDate;
     @SerializedName("post_id")
-    public String strPostId;
+    private String strPostId;
     @SerializedName("user_id")
-    public String strUserId;
+    private String strUserId;
     @NotNull
     @Override
     public String toString() {
@@ -23,4 +23,9 @@ public class Reputation {
                 + "\nCreated At: " + strCreateDate
                 + "\nPost ID: " + strPostId;
     }
+
+    public String getStrUserId() {
+        return strUserId;
+    }
+
 }

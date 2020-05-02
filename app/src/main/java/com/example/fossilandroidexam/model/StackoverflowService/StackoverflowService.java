@@ -5,7 +5,6 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.fossilandroidexam.model.ImageDatabase.ImageDatabase;
 import com.example.fossilandroidexam.model.ListWrapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

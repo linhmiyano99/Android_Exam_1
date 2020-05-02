@@ -6,23 +6,29 @@ import org.jetbrains.annotations.NotNull;
 
 public class User {
     @SerializedName("display_name")
-    public String strDisplayName;
+    private String strDisplayName;
     @SerializedName("profile_image")
-    public String srtProfileImageUrl;
+    private String srtProfileImageUrl;
     @SerializedName("reputation")
-    public Integer intReputation;
+    private Integer intReputation;
     @SerializedName("location")
-    public String strLocation;
-    public int age;
+    private String strLocation;
     @SerializedName("user_id")
-    public String strUserId;
+    private String strUserId;
 
     @NotNull
     @Override
     public String toString() {
         return  strDisplayName
                 + "\n " + intReputation
-                + ", " + strLocation
-                + ", " + age;
+                + ", " + strLocation ;
+    }
+
+    public String getSrtProfileImageUrl() {
+        return srtProfileImageUrl;
+    }
+
+    public String getStrUserId() {
+        return strUserId;
     }
 }

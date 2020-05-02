@@ -1,7 +1,6 @@
 package com.example.fossilandroidexam.view.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,9 +66,7 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     public void onBindViewHolder(@NonNull RecyclerViewAdapterReputation.ViewHolder holder, int position) {
         Reputation reputation =  listReputations.get(position);
         holder.txtDetail.setText(reputation.toString());
-        holder.itemView.setTag(reputation.strUserId);
-        Log.d(reputation.strUserId, String.valueOf(reputation));
-
+        holder.itemView.setTag(reputation.getStrUserId());
     }
 
     @Override

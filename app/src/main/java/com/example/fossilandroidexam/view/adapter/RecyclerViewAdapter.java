@@ -125,14 +125,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
         User user = listUser.get(position);
         holder.textDisplay.setText(user.toString());
-        holder.itemView.setTag(user.strUserId);
-        holder.imageProfile.setImageBitmap(mapImage.get(user.srtProfileImageUrl));
-        holder.imageBookmark.setTag(user.strUserId);
-        holder.linearLayout.setTag(user.strUserId);
+        holder.itemView.setTag(user.getStrUserId());
+        holder.imageProfile.setImageBitmap(mapImage.get(user.getSrtProfileImageUrl()));
+        holder.imageBookmark.setTag(user.getStrUserId());
+        holder.linearLayout.setTag(user.getStrUserId());
 
         // load bookmark
         if(listBookmark != null) {
-            if (listBookmark.contains(user.strUserId)) {
+            if (listBookmark.contains(user.getStrUserId())) {
                 holder.imageBookmark.setImageResource(R.drawable.bookmark_black);
             } else {
                 holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
@@ -153,9 +153,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         Log.d("List user in adapter", String.valueOf(list));
         for (User user : list
         ) {
-            if(mapImage.containsKey(user.srtProfileImageUrl))
+            if(mapImage.containsKey(user.getSrtProfileImageUrl()))
                 return;
-           viewModel.loadImage(user.srtProfileImageUrl);
+           viewModel.loadImage(user.getSrtProfileImageUrl());
         }
     }
     public void updateListBookmarkUsers(){

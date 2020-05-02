@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 
 import com.example.fossilandroidexam.R;
@@ -45,7 +44,4 @@ public class DetailOfUserActivity extends AppCompatActivity {
         adapterReputation.loadDetailOfUser();
     }
 
-    public void detail(View view) {
-        viewDetailsOfUser();
-    }
 }

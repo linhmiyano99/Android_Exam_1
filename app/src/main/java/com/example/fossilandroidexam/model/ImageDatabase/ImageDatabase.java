@@ -1,12 +1,9 @@
 package com.example.fossilandroidexam.model.ImageDatabase;
 
-import android.app.Application;
 import android.graphics.Bitmap;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import com.example.fossilandroidexam.model.BookmarkDatabase.BookmarkDatabase;
 
 import java.util.AbstractMap;
 import java.util.Map;

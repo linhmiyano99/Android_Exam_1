@@ -55,7 +55,7 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
 
                         for (User user: listUser
                              ) {
-                            if(user.strUserId.equals(v.getTag()))
+                            if(user.getStrUserId().equals(v.getTag()))
                             {
                                 listUser.remove(user);
                                 return;
@@ -119,10 +119,10 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     public void onBindViewHolder(@NonNull RecyclerViewAdapterBookmark.ViewHolder holder, int position) {
         User user = listUser.get(position);
         holder.textDisplay.setText(user.toString());
-        holder.itemView.setTag(user.strUserId);
-        holder.imageProfile.setImageBitmap(mapImage.get(user.srtProfileImageUrl));
-        holder.imageBookmark.setTag(user.strUserId);
-        holder.linearLayout.setTag(user.strUserId);
+        holder.itemView.setTag(user.getStrUserId());
+        holder.imageProfile.setImageBitmap(mapImage.get(user.getSrtProfileImageUrl()));
+        holder.imageBookmark.setTag(user.getStrUserId());
+        holder.linearLayout.setTag(user.getStrUserId());
 
         // load bookmark
         holder.imageBookmark.setImageResource(R.drawable.bookmark_black);
@@ -146,9 +146,9 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
         Log.d("List user in adapter", String.valueOf(list));
         for (User user : list
         ) {
-            if(mapImage.containsKey(user.srtProfileImageUrl))
+            if(mapImage.containsKey(user.getSrtProfileImageUrl()))
                 return;
-            viewModel.loadImage(user.srtProfileImageUrl);
+            viewModel.loadImage(user.getSrtProfileImageUrl());
         }
     }
 }
