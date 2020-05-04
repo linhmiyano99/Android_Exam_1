@@ -14,7 +14,7 @@ import java.util.Map;
 public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     private ListBookmarkResponse delegate = null;
 
-    public void setDelegate(ListBookmarkResponse delegate) {
+    void setDelegate(ListBookmarkResponse delegate) {
         this.delegate = delegate;
     }
 
@@ -22,8 +22,8 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     protected List<String> doInBackground(Context... contexts) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
         List<String> listBookmark = new ArrayList<>();
-        Map<String, Boolean> map = (Map<String, Boolean>) sharedPreferences.getAll();
-        for (Map.Entry<String, Boolean> entry:map.entrySet()
+        Map<String, ?> map = sharedPreferences.getAll();
+        for (Map.Entry<String, ?> entry:map.entrySet()
              ) {
             listBookmark.add(entry.getKey());
         }

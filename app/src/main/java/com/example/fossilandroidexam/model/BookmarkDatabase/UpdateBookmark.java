@@ -13,7 +13,7 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
     private String key;
     private Boolean value;
 
-    public UpdateBookmark(String key, Boolean value) {
+     UpdateBookmark(String key, Boolean value) {
         this.key = key;
         this.value = value;
     }
@@ -24,7 +24,7 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         if(value) {
-            editor.putBoolean(key, value);
+            editor.putBoolean(key, true);
         }
         else {
             editor.remove(key);

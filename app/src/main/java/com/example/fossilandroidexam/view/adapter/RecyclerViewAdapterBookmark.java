@@ -2,6 +2,7 @@ package com.example.fossilandroidexam.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
+import com.example.fossilandroidexam.view.activity.DetailOfUserActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +32,7 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
     private StackoverflowViewModel viewModel;
-
+    private Context context;
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textDisplay;
@@ -44,27 +46,13 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
             imageProfile = itemView.findViewById(R.id.profile_image);
             linearLayout = itemView.findViewById(R.id.linearLayout);
             imageBookmark = itemView.findViewById(R.id.bookmark);
-            imageBookmark.setOnClickListener(new View.OnClickListener() {
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
                 public void onClick(View v) {
-                    //filtBoorkmark();
-                    Log.d("mapBookmark", String.valueOf(listBookmark.size()));
-                    String key = (String) v.getTag();
-                    if (listBookmark.contains(key)) {
-                        listBookmark.remove(key);
-                        viewModel.updateAUserOfBookmarkData(key, false);
-
-                        for (User user: listUser
-                             ) {
-                            if(user.getStrUserId().equals(v.getTag()))
-                            {
-                                listUser.remove(user);
-                                return;
-                            }
-                        }
-                    }
-                    notifyDataSetChanged();
-
-
+                    Intent intent = new Intent(context, DetailOfUserActivity.class);
+                    intent.putExtra("userId", (String) v.getTag());
+                    context.startActivity(intent);
                 }
             });
         }
@@ -72,6 +60,7 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
 
 
     public RecyclerViewAdapterBookmark(Context context, StackoverflowViewModel viewModel) {
+        this.context = context;
         this.listUser = new ArrayList<>();
         listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
@@ -90,6 +79,8 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
             @Override
             public void onChanged(List<String> strings) {
                 listBookmark.addAll(strings);
+                Log.d("mapBookmark", String.valueOf(listBookmark.size()));
+
             }
         });
         this.viewModel.getEntryImage().observe((LifecycleOwner) context, new Observer<Map.Entry<String, Bitmap>>() {
@@ -112,7 +103,7 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
         // Get the app's shared preferences
 
 
-        return new RecyclerViewAdapterBookmark.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
@@ -146,8 +137,6 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
         Log.d("List user in adapter", String.valueOf(list));
         for (User user : list
         ) {
-            if(mapImage.containsKey(user.getSrtProfileImageUrl()))
-                return;
             viewModel.loadImage(user.getSrtProfileImageUrl());
         }
     }

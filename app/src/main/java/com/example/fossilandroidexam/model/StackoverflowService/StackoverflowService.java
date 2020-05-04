@@ -22,9 +22,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class StackoverflowService {
     private StackoverflowAPI stackoverflowAPI;
-    private MutableLiveData listUsers;
-    private MutableLiveData listBookmarkUsers;
-    private MutableLiveData listReputation;
+    private MutableLiveData<List<User>> listUsers;
+    private MutableLiveData<List<User>> listBookmarkUsers;
+    private MutableLiveData<List<Reputation>> listReputation;
     private static StackoverflowService INSTANCE;
     public static StackoverflowService getStackoverflowService()
     {
@@ -35,9 +35,9 @@ public class StackoverflowService {
         return  INSTANCE;
     }
     private StackoverflowService() {
-        listUsers = new MutableLiveData();
-        listBookmarkUsers = new MutableLiveData();
-        listReputation = new MutableLiveData();
+        listUsers = new MutableLiveData<>();
+        listBookmarkUsers = new MutableLiveData<>();
+        listReputation = new MutableLiveData<>();
         createStackoverflowAPI();
     }
     private void createStackoverflowAPI() {

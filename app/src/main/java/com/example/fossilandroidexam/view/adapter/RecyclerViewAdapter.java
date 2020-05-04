@@ -72,8 +72,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                     viewModel.updateAUserOfBookmarkData(key, value);
                     notifyDataSetChanged();
-
-
                 }
             });
         }

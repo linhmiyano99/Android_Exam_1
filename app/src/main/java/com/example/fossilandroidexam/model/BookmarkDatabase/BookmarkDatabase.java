@@ -2,6 +2,7 @@ package com.example.fossilandroidexam.model.BookmarkDatabase;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -35,6 +36,8 @@ public class BookmarkDatabase implements ListBookmarkResponse {
     @Override
     public void processListBookmarkFinish(List<String> output) {
             listBookmark.setValue(output);
+        Log.d("Value", String.valueOf(listBookmark));
+
     }
     private void updateBookmarkData() {
         LoadBookmarkTask task = new LoadBookmarkTask();

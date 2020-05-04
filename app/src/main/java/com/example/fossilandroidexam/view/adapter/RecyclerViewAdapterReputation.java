@@ -26,9 +26,7 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     private int intDetailPage;
     private String userId;
 
-
-
-    class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtDetail;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -59,7 +57,7 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
                 inflater.inflate(R.layout.item_recyclerview_reputation, parent, false);
         // Get the app's shared preferences
 
-        return new ViewHolder(view) ;
+        return new ViewHolder(view);
     }
 
     @Override

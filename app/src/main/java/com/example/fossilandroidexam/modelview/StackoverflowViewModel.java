@@ -31,7 +31,7 @@ public class StackoverflowViewModel extends AndroidViewModel {
         super(application);
         service = StackoverflowService.getStackoverflowService();
         bookmarkDatabase = BookmarkDatabase.getBookmarkDatabase(application);
-        imageDatabase = ImageDatabase.getImageDatabase();
+        imageDatabase = ImageDatabase.getImageDatabase(application);
         listUsers = service.getListUsers();
         listBookmarkUsers = service.getListBookmarkUsers();
         listReputation = service.getListReputation();
