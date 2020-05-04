@@ -17,19 +17,19 @@ import com.bumptech.glide.request.transition.Transition;
 import java.util.AbstractMap;
 import java.util.Map;
 
-public class ImageDatabase{
+public class ImageFromUrl{
     private MutableLiveData<Map.Entry<String, Bitmap>> entryImage;
     private Context context;
-    private ImageDatabase(Application application) {
+    private ImageFromUrl(Application application) {
         entryImage = new MutableLiveData<>();
         this.context = application.getApplicationContext();
     }
-    private static ImageDatabase INSTANCE;
-    public static ImageDatabase getImageDatabase(Application application)
+    private static ImageFromUrl INSTANCE;
+    public static ImageFromUrl getImageDatabase(Application application)
     {
         if(INSTANCE == null)
         {
-            INSTANCE = new ImageDatabase(application);
+            INSTANCE = new ImageFromUrl(application);
         }
         return  INSTANCE;
     }

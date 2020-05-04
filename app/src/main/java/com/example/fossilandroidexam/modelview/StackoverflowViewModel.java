@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData;
 
 
 import com.example.fossilandroidexam.model.BookmarkDatabase.BookmarkDatabase;
-import com.example.fossilandroidexam.model.ImageDatabase.ImageDatabase;
+import com.example.fossilandroidexam.model.ImageDatabase.ImageFromUrl;
 import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
 import com.example.fossilandroidexam.model.StackoverflowService.StackoverflowService;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
@@ -20,7 +20,7 @@ import java.util.Map;
 public class StackoverflowViewModel extends AndroidViewModel {
     private StackoverflowService service;
     private BookmarkDatabase bookmarkDatabase;
-    private ImageDatabase imageDatabase;
+    private ImageFromUrl imageDatabase;
     private LiveData<List<User>> listUsers;
     private LiveData<List<User>> listBookmarkUsers;
     private LiveData<List<Reputation>> listReputation;
@@ -31,7 +31,7 @@ public class StackoverflowViewModel extends AndroidViewModel {
         super(application);
         service = StackoverflowService.getStackoverflowService();
         bookmarkDatabase = BookmarkDatabase.getBookmarkDatabase(application);
-        imageDatabase = ImageDatabase.getImageDatabase(application);
+        imageDatabase = ImageFromUrl.getImageDatabase(application);
         listUsers = service.getListUsers();
         listBookmarkUsers = service.getListBookmarkUsers();
         listReputation = service.getListReputation();
