@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class User {
     @SerializedName("display_name")
-    private String strDisplayName;
+    private String strDisplayName; // Should we public here?
     @SerializedName("profile_image")
     private String srtProfileImageUrl;
     @SerializedName("reputation")

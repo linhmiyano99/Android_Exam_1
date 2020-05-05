@@ -87,6 +87,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.viewModel.getListUsers().observe((LifecycleOwner) context, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
+                restoreState();
                 addListUser(users);
                 intUserPage++;
             }
@@ -129,7 +130,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.linearLayout.setTag(user.getStrUserId());
 
         // load bookmark
-        if(listBookmark != null) {
+        if (listBookmark != null) {
             if (listBookmark.contains(user.getStrUserId())) {
                 holder.imageBookmark.setImageResource(R.drawable.bookmark_black);
             } else {
@@ -144,23 +145,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-
     @SuppressLint("CheckResult")
     private void addListUser(List<User> list) {
         listUser.addAll(list);
         Log.d("List user in adapter", String.valueOf(list));
         for (User user : list
         ) {
-            if(mapImage.containsKey(user.getSrtProfileImageUrl()))
+            if (mapImage.containsKey(user.getSrtProfileImageUrl()))
                 return;
-           viewModel.loadImage(user.getSrtProfileImageUrl());
+            viewModel.loadImage(user.getSrtProfileImageUrl());
         }
     }
-    public void updateListBookmarkUsers(){
+
+    public void updateListBookmarkUsers() {
         viewModel.loadBookmarkUser(listBookmark);
     }
-    public void loadUserOfPage(){
+
+    public void loadUserOfPage() {
         viewModel.loadAllUsersOfPage(intUserPage);
     }
-}
 
+    private void restoreState() {
+        context.restoreState();
+    }
+}

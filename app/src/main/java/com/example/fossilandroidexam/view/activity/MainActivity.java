@@ -2,6 +2,7 @@ package com.example.fossilandroidexam.view.activity;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.Button;
 
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerViewAdapter adapterOfUsers;
     private RecyclerViewAdapterBookmark adapterOfBookMarkUsers;
     boolean isUserPage = true;
+    private Parcelable recyclerViewState;
 
 
     @Override
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                     //bottom of list!
 
                     if(isUserPage) {
-
+                        recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
                         loadAllUsersOfNextPage();
                     }
                 }
@@ -74,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void loadAllUsersOfNextPage() {
         adapterOfUsers.loadUserOfPage();
-        setUserPage();
     }
 
     @Override
@@ -99,5 +100,9 @@ public class MainActivity extends AppCompatActivity {
     public void setBookmark(){
         isUserPage = false;
         recyclerView.setAdapter(adapterOfBookMarkUsers);
+    }
+    public void restoreState(){
+        Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
+        setUserPage();
     }
 }
