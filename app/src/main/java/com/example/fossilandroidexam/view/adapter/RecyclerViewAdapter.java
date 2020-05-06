@@ -29,12 +29,40 @@ import java.util.Map;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
-    private MainActivity context;
+   // private MainActivity context;
+
+    public void addAllListUser(List<User> listUser) {
+        this.listUser.addAll(listUser);
+    }
+
+    public void addAllListBookmark(List<String> listBookmark) {
+        this.listBookmark.addAll(listBookmark);
+    }
+
+    public void putMapImage(String key, Bitmap value) {
+
+        this.mapImage.put(key, value);
+    }
+
+    public List<String> getListBookmark() {
+        return listBookmark;
+    }
+
     private List<String> listBookmark;
+
+    public Map<String, Bitmap> getMapImage() {
+        return mapImage;
+    }
+
     private Map<String, Bitmap> mapImage;
-    private StackoverflowViewModel viewModel;
-    private int intUserPage;
+
+
+    // private StackoverflowViewModel viewModel;
+    // private int intUserPage;
+
+
     private OnItemUserReputationClickListener listenerReputationItem;
+    private OnItemBookmarkClickListener listenerBookMarkItem;
 
     //this override the implemented method from asyncTask
 
@@ -59,6 +87,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageBookmark = itemView.findViewById(R.id.bookmark);
             imageBookmark.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+
+
                     //filtBoorkmark();
                     boolean value = true;
                     String key = (String) v.getTag();
@@ -68,8 +98,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     } else {
                         listBookmark.add(key);
                     }
+                    if (listenerBookMarkItem!= null)
+                        listenerBookMarkItem.onItemBookmark(key,value);
 
-                    viewModel.updateAUserOfBookmarkData(key, value);
                     notifyDataSetChanged();
                 }
             });
@@ -79,34 +110,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public RecyclerViewAdapter(Context context, StackoverflowViewModel viewModel) {
         this.listUser = new ArrayList<>();
-        this.context = (MainActivity) context;
+      //  this.context = (MainActivity) context;
         mapImage = new HashMap<>();
-        intUserPage = 1;
-        this.viewModel = viewModel;
-        this.viewModel.getListUsers().observe((LifecycleOwner) context, new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                restoreState();
-                addListUser(users);
-                intUserPage++;
-            }
-        });
-        listBookmark = new ArrayList<>();
-        this.viewModel.getListbookmark().observe((LifecycleOwner) context, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                listBookmark.addAll(strings);
-                notifyDataSetChanged();
-            }
-        });
+       // intUserPage = 1;
+        //this.viewModel = viewModel;
 
-        this.viewModel.getEntryImage().observe((LifecycleOwner) context, new Observer<Map.Entry<String, Bitmap>>() {
-            @Override
-            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
-                mapImage.put(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
-                notifyDataSetChanged();
-            }
-        });
+        listBookmark = new ArrayList<>();
+
     }
 
     @NonNull
@@ -145,28 +155,30 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    @SuppressLint("CheckResult")
-    private void addListUser(List<User> list) {
-        listUser.addAll(list);
-        Log.d("List user in adapter", String.valueOf(list));
-        for (User user : list
-        ) {
-            if (mapImage.containsKey(user.getSrtProfileImageUrl()))
-                return;
-            viewModel.loadImage(user.getSrtProfileImageUrl());
-        }
-    }
+//    @SuppressLint("CheckResult")
+//    public void addListUser(List<User> list) {
+//        //listUser.addAll(list);
+//        Log.d("List user in adapter", String.valueOf(list));
+//        for (User user : list) {
+//            if (mapImage.containsKey(user.getSrtProfileImageUrl()))
+//                return;
+//            viewModel.loadImage(user.getSrtProfileImageUrl());
+//        }
+//    }
 
-    public void updateListBookmarkUsers() {
-        viewModel.loadBookmarkUser(listBookmark);
-    }
+//    public void updateListBookmarkUsers() {
+//        viewModel.loadBookmarkUser(listBookmark);
+//    }
 
-    public void loadUserOfPage() {
-        viewModel.loadAllUsersOfPage(intUserPage);
-    }
+    //public void loadUserOfPage() {
+    //    viewModel.loadAllUsersOfPage(intUserPage);
+    //}
 
-    private void restoreState() {
-        context.restoreState();
+    public interface OnItemBookmarkClickListener{
+        void onItemBookmark(String key, Boolean value);
+    }
+    public void setOnItemBookmarkClickListener(OnItemBookmarkClickListener listener) {
+        this.listenerBookMarkItem = listener;
     }
 
 
