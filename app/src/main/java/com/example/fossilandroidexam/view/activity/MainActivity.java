@@ -1,6 +1,8 @@
 package com.example.fossilandroidexam.view.activity;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.View;
@@ -34,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        StackoverflowViewModel viewModel = new ViewModelProvider(this).get(StackoverflowViewModel.class);
+
+
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -54,8 +57,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        StackoverflowViewModel viewModel = new ViewModelProvider(this).get(StackoverflowViewModel.class);
         adapterOfUsers = new RecyclerViewAdapter(MainActivity.this, viewModel);
         adapterOfBookMarkUsers = new RecyclerViewAdapterBookmark(MainActivity.this, viewModel);
+
+
+
+
         Button btnLoadUserAvailable = findViewById(R.id.btnAllUsers);
         btnLoadUserAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,9 +80,41 @@ public class MainActivity extends AppCompatActivity {
                 adapterOfUsers.updateListBookmarkUsers(); // need minimize
             }
         });
+
+
         loadAllUsersOfNextPage();
         recyclerView.setAdapter(adapterOfUsers);
+
+        listenerClickItem();
+
+
     }
+
+    public void listenerClickItem()
+    {
+        //click item from recyclerViewAdapter
+        adapterOfUsers.setOnItemUserReputationClickListener(new RecyclerViewAdapter.OnItemUserReputationClickListener() {
+            @Override
+            public void onItemClick(String string) {
+                Intent intent = new Intent(MainActivity.this, DetailOfUserActivity.class);
+                intent.putExtra("userId", string);
+                startActivity(intent);
+            }
+        });
+
+        //click item from recyclerViewAdapter BookMark
+        adapterOfBookMarkUsers.setOnItemUserReputationClickListener(new RecyclerViewAdapterBookmark.OnItemUserBookmarkedReputationClickListener() {
+            @Override
+            public void onItemBookmarkedClick(String string) {
+                Intent intent = new Intent(MainActivity.this, DetailOfUserActivity.class);
+                intent.putExtra("userId", string);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+
     public void loadAllUsersOfNextPage() {
         adapterOfUsers.loadUserOfPage();
     }
@@ -105,4 +146,7 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
         setUserPage();
     }
+
+
+
 }

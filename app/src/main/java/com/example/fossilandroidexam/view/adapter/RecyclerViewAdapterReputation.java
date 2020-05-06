@@ -26,11 +26,13 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     private int intDetailPage;
     private String userId;
 
+
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtDetail;
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtDetail = itemView.findViewById(R.id.txtDetail);
+
         }
     }
 
@@ -80,4 +82,6 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+
 }

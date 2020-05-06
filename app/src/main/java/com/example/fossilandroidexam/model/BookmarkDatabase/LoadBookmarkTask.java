@@ -23,8 +23,7 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(contexts[0]);
         List<String> listBookmark = new ArrayList<>();
         Map<String, ?> map = sharedPreferences.getAll();
-        for (Map.Entry<String, ?> entry:map.entrySet()
-             ) {
+        for (Map.Entry<String, ?> entry:map.entrySet()) {
             listBookmark.add(entry.getKey());
         }
         return listBookmark;
@@ -32,8 +31,6 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> result) {
         if(result  != null){
-            //adapter.setListBookmark(result);
-            //adapter.notifyLoadImageDone();
             delegate.processListBookmarkFinish(result);
         } else{
             Log.e("MyMessage", "Failed to fetch data!");

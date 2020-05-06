@@ -33,6 +33,7 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     private Map<String, Bitmap> mapImage;
     private StackoverflowViewModel viewModel;
     private Context context;
+    private OnItemUserBookmarkedReputationClickListener listener;
 
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textDisplay;
@@ -50,9 +51,8 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailOfUserActivity.class);
-                    intent.putExtra("userId", (String) v.getTag());
-                    context.startActivity(intent);
+                    if (listener!=null)
+                        listener.onItemBookmarkedClick((String) v.getTag());
                 }
             });
         }
@@ -139,5 +139,12 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
         ) {
             viewModel.loadImage(user.getSrtProfileImageUrl());
         }
+    }
+
+    public interface OnItemUserBookmarkedReputationClickListener{
+        void onItemBookmarkedClick(String string);
+    }
+    public void setOnItemUserReputationClickListener(OnItemUserBookmarkedReputationClickListener listener){
+        this.listener = listener;
     }
 }

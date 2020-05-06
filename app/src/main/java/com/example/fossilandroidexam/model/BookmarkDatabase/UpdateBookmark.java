@@ -29,7 +29,7 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
         else {
             editor.remove(key);
         }
-        editor.apply(); // Very important
+        editor.apply();
 
         return null;
     }

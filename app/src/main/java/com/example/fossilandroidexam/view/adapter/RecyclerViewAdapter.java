@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
-import com.example.fossilandroidexam.view.activity.DetailOfUserActivity;
 import com.example.fossilandroidexam.view.activity.MainActivity;
 
 import java.util.ArrayList;
@@ -35,6 +34,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Map<String, Bitmap> mapImage;
     private StackoverflowViewModel viewModel;
     private int intUserPage;
+    private OnItemUserReputationClickListener listenerReputationItem;
 
     //this override the implemented method from asyncTask
 
@@ -52,9 +52,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, DetailOfUserActivity.class);
-                    intent.putExtra("userId", (String) v.getTag());
-                    context.startActivity(intent);
+                    if (listenerReputationItem!=null)
+                        listenerReputationItem.onItemClick((String) v.getTag());
                 }
             });
             imageBookmark = itemView.findViewById(R.id.bookmark);
@@ -97,6 +96,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             @Override
             public void onChanged(List<String> strings) {
                 listBookmark.addAll(strings);
+                notifyDataSetChanged();
             }
         });
 
@@ -167,5 +167,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private void restoreState() {
         context.restoreState();
+    }
+
+
+    public interface OnItemUserReputationClickListener{
+        void onItemClick(String string);
+    }
+    public void setOnItemUserReputationClickListener(OnItemUserReputationClickListener listener){
+        this.listenerReputationItem = listener;
     }
 }

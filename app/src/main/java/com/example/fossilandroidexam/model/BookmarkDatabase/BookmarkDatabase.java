@@ -26,7 +26,7 @@ public class BookmarkDatabase implements ListBookmarkResponse {
     private BookmarkDatabase(Application application) {
         this.context = application.getApplicationContext();
         listBookmark = new MutableLiveData<>();
-        updateBookmarkData();
+        loadBookmarkData();
     }
 
     public LiveData<List<String>> getListBookmark() {
@@ -39,7 +39,7 @@ public class BookmarkDatabase implements ListBookmarkResponse {
         Log.d("Value", String.valueOf(listBookmark));
 
     }
-    private void updateBookmarkData() {
+    private void loadBookmarkData() {
         LoadBookmarkTask task = new LoadBookmarkTask();
         //this to set delegate / listener back to this class
         task.setDelegate(this);
