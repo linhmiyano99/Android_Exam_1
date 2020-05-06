@@ -1,20 +1,15 @@
 package com.example.fossilandroidexam.view.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
-import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
-
 
 import java.util.ArrayList;
 import java.util.List;

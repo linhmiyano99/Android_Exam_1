@@ -1,6 +1,5 @@
 package com.example.fossilandroidexam.view.adapter;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;

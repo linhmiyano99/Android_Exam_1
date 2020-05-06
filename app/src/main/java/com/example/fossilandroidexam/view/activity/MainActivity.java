@@ -1,6 +1,5 @@
 package com.example.fossilandroidexam.view.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -13,14 +12,12 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
@@ -46,10 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         viewModel = new ViewModelProvider(this).get(StackoverflowViewModel.class);
-
-
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);

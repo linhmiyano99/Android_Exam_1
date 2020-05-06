@@ -1,7 +1,6 @@
 package com.example.fossilandroidexam.view.adapter;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
-import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;

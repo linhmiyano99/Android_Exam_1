@@ -2,7 +2,6 @@ package com.example.fossilandroidexam.view.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +28,7 @@ public class DetailOfUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_of_user);
         intDetailPage = 1;
-        viewModel = StackoverflowViewModel.getInstance(getApplication());
+        viewModel = new ViewModelProvider(this).get(StackoverflowViewModel.class);
 
         TextView userId = findViewById(R.id.txtUserId);
         userId.setText(Objects.requireNonNull(getIntent().getExtras()).getString("userId"));
