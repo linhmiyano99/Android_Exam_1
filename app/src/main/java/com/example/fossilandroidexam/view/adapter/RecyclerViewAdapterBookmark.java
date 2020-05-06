@@ -2,9 +2,7 @@ package com.example.fossilandroidexam.view.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +11,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
-import com.example.fossilandroidexam.view.activity.DetailOfUserActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,8 +26,7 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     private List<User> listUser;
     private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
-    private StackoverflowViewModel viewModel;
-    private Context context;
+
     private OnItemUserBookmarkedReputationClickListener listener;
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -59,37 +53,11 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     }
 
 
-    public RecyclerViewAdapterBookmark(Context context, StackoverflowViewModel viewModel) {
-        this.context = context;
+    public RecyclerViewAdapterBookmark() {
         this.listUser = new ArrayList<>();
         listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
-        this.viewModel = viewModel;
-        this.viewModel.getListBookmarkUsers().observe((LifecycleOwner) context, new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                Log.d("getListBookmarkUsers", String.valueOf(users));
 
-                    clearListUser();
-                    addListUser(users);
-
-            }
-        });
-        this.viewModel.getListbookmark().observe((LifecycleOwner) context, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                listBookmark.addAll(strings);
-                Log.d("mapBookmark", String.valueOf(listBookmark.size()));
-
-            }
-        });
-        this.viewModel.getEntryImage().observe((LifecycleOwner) context, new Observer<Map.Entry<String, Bitmap>>() {
-            @Override
-            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
-                mapImage.put(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
-                notifyDataSetChanged();
-            }
-        });
 
     }
 
@@ -126,20 +94,24 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     }
 
 
-    private void clearListUser() {
+    public void clearListUser() {
         listUser.clear();
     }
 
 
-    @SuppressLint("CheckResult")
-    private void addListUser(List<User> list){
-        listUser.addAll(list);
-        Log.d("List user in adapter", String.valueOf(list));
-        for (User user : list
-        ) {
-            viewModel.loadImage(user.getSrtProfileImageUrl());
-        }
+    public void addAllListUser(List<User> listUser) {
+        this.listUser.addAll(listUser);
     }
+
+    public void addAllListBookmark(List<String> listBookmark) {
+        this.listBookmark.addAll(listBookmark);
+    }
+
+    public void putMapImage(String key, Bitmap value) {
+        this.mapImage.put(key, value);
+    }
+
+    @SuppressLint("CheckResult")
 
     public interface OnItemUserBookmarkedReputationClickListener{
         void onItemBookmarkedClick(String string);

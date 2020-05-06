@@ -1,10 +1,7 @@
 package com.example.fossilandroidexam.view.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.Observer;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
-import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
-import com.example.fossilandroidexam.view.activity.MainActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +23,6 @@ import java.util.Map;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
-   // private MainActivity context;
 
     public void addAllListUser(List<User> listUser) {
         this.listUser.addAll(listUser);
@@ -57,8 +50,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Map<String, Bitmap> mapImage;
 
 
-    // private StackoverflowViewModel viewModel;
-    // private int intUserPage;
 
 
     private OnItemUserReputationClickListener listenerReputationItem;
@@ -108,15 +99,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
 
-    public RecyclerViewAdapter(Context context, StackoverflowViewModel viewModel) {
+    public RecyclerViewAdapter() {
         this.listUser = new ArrayList<>();
-      //  this.context = (MainActivity) context;
         mapImage = new HashMap<>();
-       // intUserPage = 1;
-        //this.viewModel = viewModel;
-
         listBookmark = new ArrayList<>();
-
     }
 
     @NonNull
@@ -154,25 +140,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listUser.size();
     }
 
-
-//    @SuppressLint("CheckResult")
-//    public void addListUser(List<User> list) {
-//        //listUser.addAll(list);
-//        Log.d("List user in adapter", String.valueOf(list));
-//        for (User user : list) {
-//            if (mapImage.containsKey(user.getSrtProfileImageUrl()))
-//                return;
-//            viewModel.loadImage(user.getSrtProfileImageUrl());
-//        }
-//    }
-
-//    public void updateListBookmarkUsers() {
-//        viewModel.loadBookmarkUser(listBookmark);
-//    }
-
-    //public void loadUserOfPage() {
-    //    viewModel.loadAllUsersOfPage(intUserPage);
-    //}
 
     public interface OnItemBookmarkClickListener{
         void onItemBookmark(String key, Boolean value);

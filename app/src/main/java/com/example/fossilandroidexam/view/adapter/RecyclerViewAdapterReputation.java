@@ -21,10 +21,12 @@ import java.util.List;
 
 public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<RecyclerViewAdapterReputation.ViewHolder> {
 
+    public void addAllListReputations(List<Reputation> listReputations) {
+        this.listReputations.addAll(listReputations);
+    }
+
     private List<Reputation> listReputations;
-    private StackoverflowViewModel viewModel;
-    private int intDetailPage;
-    private String userId;
+
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -36,18 +38,8 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         }
     }
 
-    public RecyclerViewAdapterReputation(Context context, StackoverflowViewModel viewModel) {
+    public RecyclerViewAdapterReputation() {
         listReputations = new ArrayList<>();
-        intDetailPage = 1;
-        this.viewModel = viewModel;
-        this.viewModel.getListReputation().observe((LifecycleOwner) context, new Observer<List<Reputation>>() {
-            @Override
-            public void onChanged(List<Reputation> reputations) {
-                listReputations.addAll(reputations);
-                intDetailPage++;
-                notifyDataSetChanged();
-            }
-        });
     }
 
     @NonNull
@@ -74,14 +66,6 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         return listReputations.size();
     }
 
-    public void loadDetailOfUser(){
-        viewModel.loadDetailsOfUserOfPage(userId, intDetailPage++);
-
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
 
 }

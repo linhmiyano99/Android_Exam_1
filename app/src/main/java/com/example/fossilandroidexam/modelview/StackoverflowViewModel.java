@@ -26,7 +26,17 @@ public class StackoverflowViewModel extends AndroidViewModel {
     private LiveData<List<Reputation>> listReputation;
     private LiveData<List<String>> listbookmark;
 
+    private static StackoverflowViewModel INSTANCE;
 
+    public static StackoverflowViewModel getInstance(Application application)
+    {
+        if(INSTANCE == null)
+        {
+            INSTANCE = new StackoverflowViewModel(application);
+
+        }
+        return  INSTANCE;
+    }
     public StackoverflowViewModel(Application application) {
         super(application);
         service = StackoverflowService.getStackoverflowService();

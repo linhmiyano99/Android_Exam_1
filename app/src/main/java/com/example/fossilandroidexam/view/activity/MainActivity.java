@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
+import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
 import com.example.fossilandroidexam.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
                     if(isUserPage) {
                         recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
-                        //loadAllUsersOfNextPage();
                         viewModel.loadAllUsersOfPage(intUserPage);
                     }
                 }
@@ -70,42 +70,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        adapterOfUsers = new RecyclerViewAdapter(MainActivity.this, viewModel);
-        adapterOfBookMarkUsers = new RecyclerViewAdapterBookmark(MainActivity.this, viewModel);
-
-
-        viewModel.getListUsers().observe( this, new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                restoreState();
-               // adapterOfUsers.addListUser(users);
-                adapterOfUsers.addAllListUser(users);
-                Log.d("List user in adapter", String.valueOf(users));
-                for (User user : users) {
-                    if (adapterOfUsers.getMapImage().containsKey(user.getSrtProfileImageUrl()))
-                        return;
-                    viewModel.loadImage(user.getSrtProfileImageUrl());
-                }
-                intUserPage++;
-            }
-        });
-        viewModel.getListbookmark().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                //listBookmark.addAll(strings);
-                adapterOfUsers.addAllListBookmark(strings);
-                adapterOfUsers.notifyDataSetChanged();
-            }
-        });
-
-        viewModel.getEntryImage().observe(this, new Observer<Map.Entry<String, Bitmap>>() {
-            @Override
-            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
-                //mapImage.put(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
-                adapterOfUsers.putMapImage(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
-                adapterOfUsers.notifyDataSetChanged();
-            }
-        });
+        adapterOfUsers = new RecyclerViewAdapter();
+        adapterOfBookMarkUsers = new RecyclerViewAdapterBookmark();
+        LoadDataFromViewModelToRecyclerViewAdapter();
+        LoadDataFromViewModelToRecyclerViewAdapterBookmark();
 
 
 
@@ -116,29 +84,94 @@ public class MainActivity extends AppCompatActivity {
                 setUserPage();
             }
         });
+
         Button btnLoadAllBookmarkUser = findViewById(R.id.btnAllBoorkmarkUsers);
         btnLoadAllBookmarkUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setBookmark();
-               // adapterOfUsers.updateListBookmarkUsers(); // need minimize
                 viewModel.loadBookmarkUser(adapterOfUsers.getListBookmark());
             }
         });
 
 
-        //loadAllUsersOfNextPage();
         viewModel.loadAllUsersOfPage(intUserPage);
 
 
         recyclerView.setAdapter(adapterOfUsers);
 
-        listenerClickItem();
+        listenersClickItem();
 
 
     }
 
-    public void listenerClickItem()
+    public void LoadDataFromViewModelToRecyclerViewAdapterBookmark(){
+        viewModel.getListBookmarkUsers().observe(this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                Log.d("getListBookmarkUsers", String.valueOf(users));
+                adapterOfBookMarkUsers.clearListUser();
+                adapterOfBookMarkUsers.addAllListUser(users);
+                Log.d("List user in adapter", String.valueOf(users));
+                for (User user : users) {
+                    viewModel.loadImage(user.getSrtProfileImageUrl());
+                }
+            }
+        });
+        viewModel.getListbookmark().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                adapterOfBookMarkUsers.addAllListBookmark(strings);
+
+            }
+        });
+        viewModel.getEntryImage().observe(this, new Observer<Map.Entry<String, Bitmap>>() {
+            @Override
+            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
+                adapterOfBookMarkUsers.putMapImage(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
+                adapterOfBookMarkUsers.notifyDataSetChanged();
+            }
+        });
+    }
+
+    public void LoadDataFromViewModelToRecyclerViewAdapter(){
+
+        //get list users response ,set value to adapter and load image
+        viewModel.getListUsers().observe( this, new Observer<List<User>>() {
+            @Override
+            public void onChanged(List<User> users) {
+                restoreState();
+                adapterOfUsers.addAllListUser(users);
+                Log.d("List user in adapter", String.valueOf(users));
+                for (User user : users) {
+                    if (adapterOfUsers.getMapImage().containsKey(user.getSrtProfileImageUrl()))
+                        return;
+                    viewModel.loadImage(user.getSrtProfileImageUrl());
+                }
+                intUserPage++;
+            }
+        });
+        //get Bookmark list response
+        viewModel.getListbookmark().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                adapterOfUsers.addAllListBookmark(strings);
+                adapterOfUsers.notifyDataSetChanged();
+            }
+        });
+
+        //get image
+        viewModel.getEntryImage().observe(this, new Observer<Map.Entry<String, Bitmap>>() {
+            @Override
+            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
+                adapterOfUsers.putMapImage(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
+                adapterOfUsers.notifyDataSetChanged();
+            }
+        });
+    }
+
+
+    public void listenersClickItem()
     {
         //click item from recyclerViewAdapter
         adapterOfUsers.setOnItemUserReputationClickListener(new RecyclerViewAdapter.OnItemUserReputationClickListener() {
@@ -171,9 +204,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void loadAllUsersOfNextPage() {
-        //adapterOfUsers.loadUserOfPage();
-    }
 
     @Override
     public void onBackPressed() {
