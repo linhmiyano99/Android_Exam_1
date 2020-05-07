@@ -22,6 +22,8 @@ import java.util.Map;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
+    private List<String> listBookmark;
+    private Map<String, Bitmap> mapImage;
 
     public void addAllListUser(List<User> listUser) {
         this.listUser.addAll(listUser);
@@ -40,13 +42,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listBookmark;
     }
 
-    private List<String> listBookmark;
 
     public Map<String, Bitmap> getMapImage() {
         return mapImage;
     }
 
-    private Map<String, Bitmap> mapImage;
 
 
 

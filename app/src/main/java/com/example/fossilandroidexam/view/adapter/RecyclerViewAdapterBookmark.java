@@ -22,7 +22,6 @@ import java.util.Map;
 
 public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerViewAdapterBookmark.ViewHolder>{
     private List<User> listUser;
-    private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
 
     private OnItemUserBookmarkedReputationClickListener listener;
@@ -53,7 +52,6 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
 
     public RecyclerViewAdapterBookmark() {
         this.listUser = new ArrayList<>();
-        listBookmark = new ArrayList<>();
         mapImage = new HashMap<>();
 
 
@@ -99,10 +97,6 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
 
     public void addAllListUser(List<User> listUser) {
         this.listUser.addAll(listUser);
-    }
-
-    public void addAllListBookmark(List<String> listBookmark) {
-        this.listBookmark.addAll(listBookmark);
     }
 
     public void putMapImage(String key, Bitmap value) {

@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     public void LoadDataFromViewModelToRecyclerViewAdapterBookmark(){
         viewModel.getListBookmarkUsers().observe(this, new Observer<List<User>>() {
             @Override
-            public void onChanged(List<User> users) {
+            public void onChanged(List<User> users) {// when setValue or postValue -> observe.
                 Log.d("getListBookmarkUsers", String.valueOf(users));
                 adapterOfBookMarkUsers.clearListUser();
                 adapterOfBookMarkUsers.addAllListUser(users);
@@ -112,13 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        viewModel.getListbookmark().observe(this, new Observer<List<String>>() {
-            @Override
-            public void onChanged(List<String> strings) {
-                adapterOfBookMarkUsers.addAllListBookmark(strings);
 
-            }
-        });
         viewModel.getEntryImage().observe(this, new Observer<Map.Entry<String, Bitmap>>() {
             @Override
             public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
