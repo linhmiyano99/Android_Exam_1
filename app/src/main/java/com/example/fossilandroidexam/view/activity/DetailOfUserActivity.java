@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
+import com.example.fossilandroidexam.data.model.StackoverflowService.Reputation;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterReputation;
 

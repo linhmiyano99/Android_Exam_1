@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.model.ImageDatabase;
+package com.example.fossilandroidexam.data.model.ImageDatabase;
 
 import android.app.Application;
 import android.content.Context;

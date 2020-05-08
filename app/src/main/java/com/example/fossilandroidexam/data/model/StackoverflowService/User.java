@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.model.StackoverflowService;
+package com.example.fossilandroidexam.data.model.StackoverflowService;
 
 import com.google.gson.annotations.SerializedName;
 

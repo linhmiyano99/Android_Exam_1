@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
+import com.example.fossilandroidexam.data.model.StackoverflowService.Reputation;
 
 import java.util.ArrayList;
 import java.util.List;

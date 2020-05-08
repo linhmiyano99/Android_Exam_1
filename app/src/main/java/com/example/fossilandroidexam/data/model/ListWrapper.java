@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.model;
+package com.example.fossilandroidexam.data.model;
 
 import java.util.List;
 

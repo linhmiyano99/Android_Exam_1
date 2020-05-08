@@ -8,19 +8,19 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 
-import com.example.fossilandroidexam.model.BookmarkDatabase.BookmarkDatabase;
-import com.example.fossilandroidexam.model.ImageDatabase.ImageFromUrl;
-import com.example.fossilandroidexam.model.StackoverflowService.Reputation;
-import com.example.fossilandroidexam.model.StackoverflowService.StackoverflowService;
-import com.example.fossilandroidexam.model.StackoverflowService.User;
+import com.example.fossilandroidexam.data.Repository.RemoteRepository;
+import com.example.fossilandroidexam.data.model.BookmarkDatabase.BookmarkDatabase;
+import com.example.fossilandroidexam.data.model.ImageDatabase.ImageFromUrl;
+import com.example.fossilandroidexam.data.model.StackoverflowService.Reputation;
+import com.example.fossilandroidexam.data.model.StackoverflowService.User;
 
 import java.util.List;
 import java.util.Map;
 
 public class StackoverflowViewModel extends AndroidViewModel {
-    private StackoverflowService service;
+    private RemoteRepository repository;
     private BookmarkDatabase bookmarkDatabase;
-    private ImageFromUrl imageDatabase;
+    private ImageFromUrl imageDatabase;// view
     private LiveData<List<User>> listUsers;
     private LiveData<List<User>> listBookmarkUsers;
     private LiveData<List<Reputation>> listReputation;
@@ -28,12 +28,12 @@ public class StackoverflowViewModel extends AndroidViewModel {
 
     public StackoverflowViewModel(Application application) {
         super(application);
-        service = StackoverflowService.getStackoverflowService();
+        repository = RemoteRepository.getMainRepository();
         bookmarkDatabase = BookmarkDatabase.getBookmarkDatabase(application);
         imageDatabase = ImageFromUrl.getImageDatabase(application);
-        listUsers = service.getListUsers();
-        listBookmarkUsers = service.getListBookmarkUsers();
-        listReputation = service.getListReputation();
+        listUsers = repository.getListUsers();
+        listBookmarkUsers = repository.getListBookmarkUsers();
+        listReputation = repository.getListReputation();
         listbookmark = bookmarkDatabase.getListBookmark();
     }
 
@@ -55,11 +55,11 @@ public class StackoverflowViewModel extends AndroidViewModel {
     }
 
     public void loadDetailsOfUserOfPage(String userId, int intPage) {
-        service.loadDetailsOfUserOfPage(userId, intPage);
+        repository.loadDetailsOfUserOfPage(userId, intPage);
     }
 
     public void loadAllUsersOfPage(int intPage) {
-        service.loadAllUsersOfPage(intPage);
+        repository.loadAllUsersOfPage(intPage);
     }
 
     public void loadBookmarkUser(List<String> listBookmark) {
@@ -71,7 +71,7 @@ public class StackoverflowViewModel extends AndroidViewModel {
                 for (int i = 1; i < listBookmark.size(); i++) {
                     groupStringId.append(";").append(listBookmark.get(i));
                 }
-                service.loadBookmarkUser(groupStringId);
+                repository.loadBookmarkUser(groupStringId);
             }
         }
     }

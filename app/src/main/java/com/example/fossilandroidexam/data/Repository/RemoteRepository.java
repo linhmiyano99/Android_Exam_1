@@ -1,13 +1,15 @@
-package com.example.fossilandroidexam.model.StackoverflowService;
+package com.example.fossilandroidexam.data.Repository;
 
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.fossilandroidexam.model.ListWrapper;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.fossilandroidexam.data.model.ListWrapper;
+import com.example.fossilandroidexam.data.model.StackoverflowService.Reputation;
+import com.example.fossilandroidexam.data.model.StackoverflowService.StackoverflowAPI;
+import com.example.fossilandroidexam.data.model.StackoverflowService.StackoverflowDao;
+import com.example.fossilandroidexam.data.model.StackoverflowService.User;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,43 +19,27 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
-public class StackoverflowService {
+public class RemoteRepository {
     private StackoverflowAPI stackoverflowAPI;
     private MutableLiveData<List<User>> listUsers;
     private MutableLiveData<List<User>> listBookmarkUsers;
     private MutableLiveData<List<Reputation>> listReputation;
-    private static StackoverflowService INSTANCE;
-    public static StackoverflowService getStackoverflowService()
+    private static RemoteRepository INSTANCE;
+    public static RemoteRepository getMainRepository()
     {
         if(INSTANCE == null)
         {
-            INSTANCE = new StackoverflowService();
+            INSTANCE = new RemoteRepository();
         }
         return  INSTANCE;
     }
-    private StackoverflowService() {
+    private RemoteRepository() {
+        stackoverflowAPI = StackoverflowDao.getStackoverflowAPI();
         listUsers = new MutableLiveData<>();
         listBookmarkUsers = new MutableLiveData<>();
         listReputation = new MutableLiveData<>();
-        createStackoverflowAPI();
     }
-    private void createStackoverflowAPI() {
-        Gson gson = new GsonBuilder()
-                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
-                .create();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(StackoverflowAPI.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-
-        stackoverflowAPI = retrofit.create(StackoverflowAPI.class);
-    }
-
-
     private Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>> () {
         @Override
         public void onResponse(@NotNull Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
@@ -139,5 +125,4 @@ public class StackoverflowService {
     public LiveData<List<Reputation>> getListReputation() {
         return listReputation;
     }
-
 }
