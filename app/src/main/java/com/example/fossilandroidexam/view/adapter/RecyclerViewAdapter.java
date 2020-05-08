@@ -1,8 +1,6 @@
 package com.example.fossilandroidexam.view.adapter;
 
-import android.app.Application;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,16 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.data.model.StackoverflowService.User;
+import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +24,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private List<User> listUser;
     private List<String> listBookmark;
     private Map<String, Bitmap> mapImage;
+    private OnItemUserReputationClickListener listenerReputationItem;
+    private OnItemBookmarkClickListener listenerBookMarkItem;
+
+    public RecyclerViewAdapter() {
+        this.listUser = new ArrayList<>();
+        mapImage = new HashMap<>();
+        listBookmark = new ArrayList<>();
+    }
 
     public void addAllListUser(List<User> listUser) {
         this.listUser.addAll(listUser);
@@ -40,75 +41,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.listBookmark.addAll(listBookmark);
     }
 
-    public void putMapImage(String key, Bitmap value) {
-
-        this.mapImage.put(key, value);
-    }
-
     public List<String> getListBookmark() {
         return listBookmark;
     }
 
-
     public Map<String, Bitmap> getMapImage() {
         return mapImage;
-    }
-
-
-
-
-
-    private OnItemUserReputationClickListener listenerReputationItem;
-    private OnItemBookmarkClickListener listenerBookMarkItem;
-
-    //this override the implemented method from asyncTask
-
-    class ViewHolder extends RecyclerView.ViewHolder {
-        TextView textDisplay;
-        ImageView imageProfile;
-        ImageView imageBookmark;
-        LinearLayout linearLayout;
-
-        ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            textDisplay = itemView.findViewById(R.id.displayInfo);
-            imageProfile = itemView.findViewById(R.id.profile_image);
-            linearLayout = itemView.findViewById(R.id.linearLayout);
-            linearLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listenerReputationItem!=null)
-                        listenerReputationItem.onItemClick((String) v.getTag());
-                }
-            });
-            imageBookmark = itemView.findViewById(R.id.bookmark);
-            imageBookmark.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-
-
-                    //filtBoorkmark();
-                    boolean value = true;
-                    String key = (String) v.getTag();
-                    if (listBookmark.contains(key)) {
-                        listBookmark.remove(key);
-                        value = false;
-                    } else {
-                        listBookmark.add(key);
-                    }
-                    if (listenerBookMarkItem!= null)
-                        listenerBookMarkItem.onItemBookmark(key,value);
-
-                    notifyDataSetChanged();
-                }
-            });
-        }
-    }
-
-
-    public RecyclerViewAdapter() {
-        this.listUser = new ArrayList<>();
-        mapImage = new HashMap<>();
-        listBookmark = new ArrayList<>();
     }
 
     @NonNull
@@ -148,23 +86,63 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listUser.size();
     }
 
-
-    public interface OnItemBookmarkClickListener{
-        void onItemBookmark(String key, Boolean value);
-    }
     public void setOnItemBookmarkClickListener(OnItemBookmarkClickListener listener) {
         this.listenerBookMarkItem = listener;
     }
 
-
-    public interface OnItemUserReputationClickListener{
-        void onItemClick(String string);
-    }
-    public void setOnItemUserReputationClickListener(OnItemUserReputationClickListener listener){
+    public void setOnItemUserReputationClickListener(OnItemUserReputationClickListener listener) {
         this.listenerReputationItem = listener;
     }
-    public void addImage(String url, Bitmap resource){
+
+    public void addImage(String url, Bitmap resource) {
         mapImage.put(url, resource);
         notifyDataSetChanged();
+    }
+
+    public interface OnItemBookmarkClickListener {
+        void onItemBookmark(String key, Boolean value);
+    }
+
+    public interface OnItemUserReputationClickListener {
+        void onItemClick(String string);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textDisplay;
+        ImageView imageProfile;
+        ImageView imageBookmark;
+        LinearLayout linearLayout;
+
+        ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textDisplay = itemView.findViewById(R.id.displayInfo);
+            imageProfile = itemView.findViewById(R.id.profile_image);
+            linearLayout = itemView.findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listenerReputationItem != null)
+                        listenerReputationItem.onItemClick((String) v.getTag());
+                }
+            });
+            imageBookmark = itemView.findViewById(R.id.bookmark);
+            imageBookmark.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    //filtBoorkmark();
+                    boolean value = true;
+                    String key = (String) v.getTag();
+                    if (listBookmark.contains(key)) {
+                        listBookmark.remove(key);
+                        value = false;
+                    } else {
+                        listBookmark.add(key);
+                    }
+                    if (listenerBookMarkItem != null) {
+                        listenerBookMarkItem.onItemBookmark(key, value);
+                    }
+                    notifyDataSetChanged();
+                }
+            });
+        }
     }
 }

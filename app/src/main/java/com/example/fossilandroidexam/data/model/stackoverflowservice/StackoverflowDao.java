@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.model.StackoverflowService;
+package com.example.fossilandroidexam.data.model.stackoverflowservice;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-import static com.example.fossilandroidexam.data.model.StackoverflowService.StackoverflowAPI.BASE_URL;
+import static com.example.fossilandroidexam.data.model.stackoverflowservice.StackoverflowAPI.BASE_URL;
 
 public class StackoverflowDao {
     private static Retrofit INSTANCE;

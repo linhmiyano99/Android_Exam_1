@@ -23,15 +23,13 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.data.model.StackoverflowService.User;
+import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterBookmark;
 
-
 import java.util.List;
 import java.util.Objects;
-
 
 public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -56,10 +54,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 
-                if(layoutManager.findLastCompletelyVisibleItemPosition()== Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() -1){
+                if (layoutManager.findLastCompletelyVisibleItemPosition() == Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() - 1) {
                     //bottom of list!
 
-                    if(isUserPage) {
+                    if (isUserPage) {
                         recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
                         viewModel.loadAllUsersOfPage(intUserPage);
                     }
@@ -67,14 +65,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         adapterOfUsers = new RecyclerViewAdapter();
         adapterOfBookMarkUsers = new RecyclerViewAdapterBookmark();
-        LoadDataFromViewModelToRecyclerViewAdapter();
-        LoadDataFromViewModelToRecyclerViewAdapterBookmark();
-
-
-
+        loadDataFromViewModelToRecyclerViewAdapter();
+        loadDataFromViewModelToRecyclerViewAdapterBookmark();
         Button btnLoadUserAvailable = findViewById(R.id.btnAllUsers);
         btnLoadUserAvailable.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 setUserPage();
             }
         });
-
         Button btnLoadAllBookmarkUser = findViewById(R.id.btnAllBoorkmarkUsers);
         btnLoadAllBookmarkUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,28 +84,21 @@ public class MainActivity extends AppCompatActivity {
                 viewModel.loadBookmarkUser(adapterOfUsers.getListBookmark());
             }
         });
-
-
         viewModel.loadAllUsersOfPage(intUserPage);
-
-
         recyclerView.setAdapter(adapterOfUsers);
-
         listenersClickItem();
-
-
     }
 
-    public void LoadDataFromViewModelToRecyclerViewAdapterBookmark(){
+    public void loadDataFromViewModelToRecyclerViewAdapterBookmark() {
         viewModel.getListBookmarkUsers().observe(this, new Observer<List<User>>() {
             @Override
-            public void onChanged(List<User> users) {// when setValue or postValue -> observe.
+            public void onChanged(List<User> users) {
                 Log.d("getListBookmarkUsers", String.valueOf(users));
                 adapterOfBookMarkUsers.clearListUser();
                 adapterOfBookMarkUsers.addAllListUser(users);
                 Log.d("List user in adapter", String.valueOf(users));
                 for (final User user : users) {
-                     final String url = user.getSrtProfileImageUrl();
+                    final String url = user.getSrtProfileImageUrl();
                     Glide.with(getApplicationContext())
                             .asBitmap()
                             .load(url)
@@ -132,10 +118,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void LoadDataFromViewModelToRecyclerViewAdapter(){
+    public void loadDataFromViewModelToRecyclerViewAdapter() {
 
         //get list users response ,set value to adapter and load image
-        viewModel.getListUsers().observe( this, new Observer<List<User>>() {
+        viewModel.getListUsers().observe(this, new Observer<List<User>>() {
             @Override
             public void onChanged(List<User> users) {
                 restoreState();
@@ -145,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                     if (adapterOfUsers.getMapImage().containsKey(user.getSrtProfileImageUrl()))
                         return;
                     final String url = user.getSrtProfileImageUrl();
-                    Log.d("xxxx,",url);
+                    Log.d("xxxx,", url);
                     Glide.with(getApplicationContext())
                             .asBitmap()
                             .load(url)
@@ -175,8 +161,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void listenersClickItem()
-    {
+    public void listenersClickItem() {
         //click item from recyclerViewAdapter
         adapterOfUsers.setOnItemUserReputationClickListener(new RecyclerViewAdapter.OnItemUserReputationClickListener() {
             @Override
@@ -208,7 +193,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -228,11 +212,13 @@ public class MainActivity extends AppCompatActivity {
         isUserPage = true;
         recyclerView.setAdapter(adapterOfUsers);
     }
-    public void setBookmark(){
+
+    public void setBookmark() {
         isUserPage = false;
         recyclerView.setAdapter(adapterOfBookMarkUsers);
     }
-    public void restoreState(){
+
+    public void restoreState() {
         Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
         setUserPage();
     }

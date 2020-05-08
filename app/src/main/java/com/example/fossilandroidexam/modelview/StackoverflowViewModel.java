@@ -7,10 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 
-import com.example.fossilandroidexam.data.Repository.RemoteRepository;
-import com.example.fossilandroidexam.data.Repository.BookmarkRepository;
-import com.example.fossilandroidexam.data.model.StackoverflowService.Reputation;
-import com.example.fossilandroidexam.data.model.StackoverflowService.User;
+import com.example.fossilandroidexam.data.repository.RemoteRepository;
+import com.example.fossilandroidexam.data.repository.BookmarkRepository;
+import com.example.fossilandroidexam.data.model.stackoverflowservice.Reputation;
+import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 
 import java.util.List;
 
@@ -31,7 +31,6 @@ public class StackoverflowViewModel extends AndroidViewModel {
         listReputation = repository.getListReputation();
         listbookmark = bookmarkRepository.getListBookmark();
     }
-
 
     public LiveData<List<User>> getListUsers() {
         return listUsers;
@@ -74,5 +73,4 @@ public class StackoverflowViewModel extends AndroidViewModel {
     public void updateAUserOfBookmarkData(String key, Boolean value) {
         bookmarkRepository.updateAUserOfBookmarkData(key, value);
     }
-
 }

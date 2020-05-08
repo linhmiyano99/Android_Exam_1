@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.model.BookmarkDatabase;
+package com.example.fossilandroidexam.data.model.bookmark;
 
 import android.content.Context;
 import android.content.SharedPreferences;
