@@ -111,4 +111,12 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
     public void setOnItemUserReputationClickListener(OnItemUserBookmarkedReputationClickListener listener){
         this.listener = listener;
     }
+
+    public Map<String, Bitmap> getMapImage() {
+        return mapImage;
+    }
+    public void addImage(String url, Bitmap resource){
+        mapImage.put(url, resource);
+        notifyDataSetChanged();
+    }
 }

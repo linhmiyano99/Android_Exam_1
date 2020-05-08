@@ -3,6 +3,7 @@ package com.example.fossilandroidexam.view.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -17,6 +19,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.data.model.StackoverflowService.User;
 import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
@@ -25,7 +30,6 @@ import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterBookmark;
 
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -107,19 +111,25 @@ public class MainActivity extends AppCompatActivity {
                 adapterOfBookMarkUsers.clearListUser();
                 adapterOfBookMarkUsers.addAllListUser(users);
                 Log.d("List user in adapter", String.valueOf(users));
-                for (User user : users) {
-                    viewModel.loadImage(user.getSrtProfileImageUrl());
+                for (final User user : users) {
+                     final String url = user.getSrtProfileImageUrl();
+                    Glide.with(getApplicationContext())
+                            .asBitmap()
+                            .load(url)
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    adapterOfBookMarkUsers.addImage(url, resource);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                }
+                            });
                 }
             }
         });
 
-        viewModel.getEntryImage().observe(this, new Observer<Map.Entry<String, Bitmap>>() {
-            @Override
-            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
-                adapterOfBookMarkUsers.putMapImage(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
-                adapterOfBookMarkUsers.notifyDataSetChanged();
-            }
-        });
     }
 
     public void LoadDataFromViewModelToRecyclerViewAdapter(){
@@ -134,7 +144,21 @@ public class MainActivity extends AppCompatActivity {
                 for (User user : users) {
                     if (adapterOfUsers.getMapImage().containsKey(user.getSrtProfileImageUrl()))
                         return;
-                    viewModel.loadImage(user.getSrtProfileImageUrl());
+                    final String url = user.getSrtProfileImageUrl();
+                    Log.d("xxxx,",url);
+                    Glide.with(getApplicationContext())
+                            .asBitmap()
+                            .load(url)
+                            .into(new CustomTarget<Bitmap>() {
+                                @Override
+                                public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                    adapterOfUsers.addImage(url, resource);
+                                }
+
+                                @Override
+                                public void onLoadCleared(@Nullable Drawable placeholder) {
+                                }
+                            });
                 }
                 intUserPage++;
             }
@@ -148,14 +172,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //get image
-        viewModel.getEntryImage().observe(this, new Observer<Map.Entry<String, Bitmap>>() {
-            @Override
-            public void onChanged(Map.Entry<String, Bitmap> stringBitmapEntry) {
-                adapterOfUsers.putMapImage(stringBitmapEntry.getKey(), stringBitmapEntry.getValue());
-                adapterOfUsers.notifyDataSetChanged();
-            }
-        });
     }
 
 
@@ -220,7 +236,5 @@ public class MainActivity extends AppCompatActivity {
         Objects.requireNonNull(recyclerView.getLayoutManager()).onRestoreInstanceState(recyclerViewState);
         setUserPage();
     }
-
-
 
 }

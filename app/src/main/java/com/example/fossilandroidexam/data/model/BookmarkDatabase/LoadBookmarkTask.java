@@ -14,7 +14,7 @@ import java.util.Map;
 public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     private ListBookmarkResponse delegate = null;
 
-    void setDelegate(ListBookmarkResponse delegate) {
+    public void setDelegate(ListBookmarkResponse delegate) {
         this.delegate = delegate;
     }
 

@@ -1,6 +1,8 @@
 package com.example.fossilandroidexam.view.adapter;
 
+import android.app.Application;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +12,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.data.model.StackoverflowService.User;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -117,7 +124,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerViewAdapter.ViewHolder holder, int position) {
-        User user = listUser.get(position);
+        final User user = listUser.get(position);
         holder.textDisplay.setText(user.toString());
         holder.itemView.setTag(user.getStrUserId());
         holder.imageProfile.setImageBitmap(mapImage.get(user.getSrtProfileImageUrl()));
@@ -132,6 +139,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
             }
         }
+
+
     }
 
     @Override
@@ -153,5 +162,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
     public void setOnItemUserReputationClickListener(OnItemUserReputationClickListener listener){
         this.listenerReputationItem = listener;
+    }
+    public void addImage(String url, Bitmap resource){
+        mapImage.put(url, resource);
+        notifyDataSetChanged();
     }
 }
