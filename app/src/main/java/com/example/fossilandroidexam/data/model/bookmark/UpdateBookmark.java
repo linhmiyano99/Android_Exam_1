@@ -12,7 +12,7 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
     private String key;
     private Boolean value;
 
-     public UpdateBookmark(String key, Boolean value) {
+     UpdateBookmark(String key, Boolean value) {
         this.key = key;
         this.value = value;
     }

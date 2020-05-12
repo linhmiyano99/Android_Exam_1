@@ -14,7 +14,7 @@ public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
 
     private ListBookmarkResponse delegate = null;
 
-    public void setDelegate(ListBookmarkResponse delegate) {
+    void setDelegate(ListBookmarkResponse delegate) {
         this.delegate = delegate;
     }
 

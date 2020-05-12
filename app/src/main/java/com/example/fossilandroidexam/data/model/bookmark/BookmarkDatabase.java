@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.repository;
+package com.example.fossilandroidexam.data.model.bookmark;
 
 import android.app.Application;
 import android.content.Context;
@@ -6,27 +6,23 @@ import android.content.Context;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.fossilandroidexam.data.model.bookmark.ListBookmarkResponse;
-import com.example.fossilandroidexam.data.model.bookmark.LoadBookmarkTask;
-import com.example.fossilandroidexam.data.model.bookmark.UpdateBookmark;
-
 import java.util.List;
 
-public class BookmarkRepository implements ListBookmarkResponse {
+public class BookmarkDatabase implements ListBookmarkResponse {
 
-    private static BookmarkRepository INSTANCE;
+    private static BookmarkDatabase INSTANCE;
     private MutableLiveData<List<String>> listBookmark; // use MutableLiveData to update data
     private Context context;
 
-    private BookmarkRepository(Application application) {
+    private BookmarkDatabase(Application application) {
         this.context = application.getApplicationContext();
         listBookmark = new MutableLiveData<>();
         loadBookmarkData();
     }
 
-    public static BookmarkRepository getBookmarkRepository(Application application) {
+    public static BookmarkDatabase getBookmarkRepository(Application application) {
         if (INSTANCE == null) {
-            INSTANCE = new BookmarkRepository(application);
+            INSTANCE = new BookmarkDatabase(application);
         }
         return INSTANCE;
     }

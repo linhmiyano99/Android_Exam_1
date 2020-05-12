@@ -5,17 +5,17 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.fossilandroidexam.data.repository.RemoteRepository;
-import com.example.fossilandroidexam.data.repository.BookmarkRepository;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.Reputation;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
+import com.example.fossilandroidexam.data.repository.LocalRepository;
+import com.example.fossilandroidexam.data.repository.RemoteRepository;
 
 import java.util.List;
 
 public class StackOverflowViewModel extends AndroidViewModel {
 
     private RemoteRepository repository;
-    private BookmarkRepository bookmarkRepository;
+    private LocalRepository localRepository;
     private LiveData<List<User>> listUsers;
     private LiveData<List<User>> listBookmarkUsers;
     private LiveData<List<Reputation>> listReputation;
@@ -23,12 +23,12 @@ public class StackOverflowViewModel extends AndroidViewModel {
 
     public StackOverflowViewModel(Application application) {
         super(application);
-        repository = RemoteRepository.getMainRepository();
-        bookmarkRepository = BookmarkRepository.getBookmarkRepository(application);
+        repository = RemoteRepository.getRemoteRepository();
+        localRepository = LocalRepository.getLocalRepository(application);
         listUsers = repository.getListUsers();
         listBookmarkUsers = repository.getListBookmarkUsers();
         listReputation = repository.getListReputation();
-        listBookmark = bookmarkRepository.getListBookmark();
+        listBookmark = localRepository.getListBookmark();
     }
 
     public LiveData<List<User>> getListUsers() {
@@ -60,6 +60,6 @@ public class StackOverflowViewModel extends AndroidViewModel {
     }
 
     public void updateAUserOfBookmarkData(String key, Boolean value) {
-        bookmarkRepository.updateAUserOfBookmarkData(key, value);
+        localRepository.updateAUserOfBookmarkData(key, value);
     }
 }
