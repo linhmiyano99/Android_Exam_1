@@ -46,7 +46,7 @@ public class RemoteRepository {
         @Override
         public void onFailure(@NotNull Call<ListWrapper<Reputation>> call, Throwable t) {
             t.printStackTrace();
-            Log.d("xxxxxx", "onFailure");
+            Log.d("onFailure", "onFailure");
         }
 
     };
@@ -67,7 +67,7 @@ public class RemoteRepository {
         @Override
         public void onFailure(@NotNull Call<ListWrapper<User>> call, Throwable t) {
             t.printStackTrace();
-            Log.d("xxxxxx", "onFailure");
+            Log.d("onFailure", "onFailure");
         }
     };
     private Callback<ListWrapper<User>> usersCallback = new Callback<ListWrapper<User>>() {
@@ -78,7 +78,6 @@ public class RemoteRepository {
                 List<User> list = new ArrayList<>(response.body().items);
                 if (response.body().items.size() == 0)
                     return;
-                Log.d("listUsers", String.valueOf(list.size()));
                 listUsers.setValue(list);
 
 
@@ -90,7 +89,7 @@ public class RemoteRepository {
         @Override
         public void onFailure(@NotNull Call<ListWrapper<User>> call, Throwable t) {
             t.printStackTrace();
-            Log.d("xxxxxx", "onFailure");
+            Log.d("onFailure", "onFailure");
         }
     };
 
@@ -116,8 +115,17 @@ public class RemoteRepository {
         stackoverflowAPI.getAllUsers(intPage).enqueue(usersCallback);
     }
 
-    public void loadBookmarkUser(StringBuilder groupStringId) {
-        stackoverflowAPI.getUserFromId(groupStringId).enqueue(idUserCallBack);
+    public void loadBookmarkUser(List<String> listBookmark) {
+        if (listBookmark != null) {
+            if (listBookmark.size() > 0) {
+                StringBuilder groupStringId = new StringBuilder();
+                groupStringId.append(listBookmark.get(0));
+                for (int i = 1; i < listBookmark.size(); i++) {
+                    groupStringId.append(";").append(listBookmark.get(i));
+                }
+                stackoverflowAPI.getUserFromId(groupStringId).enqueue(idUserCallBack);
+            }
+        }
     }
 
     public LiveData<List<User>> getListUsers() {

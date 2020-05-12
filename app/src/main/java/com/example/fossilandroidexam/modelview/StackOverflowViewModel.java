@@ -56,16 +56,7 @@ public class StackOverflowViewModel extends AndroidViewModel {
     }
 
     public void loadBookmarkUser(List<String> listBookmark) {
-        if (listBookmark != null) {
-            StringBuilder groupStringId = new StringBuilder();
-            if (listBookmark.size() > 0) {
-                groupStringId.append(listBookmark.get(0));
-                for (int i = 1; i < listBookmark.size(); i++) {
-                    groupStringId.append(";").append(listBookmark.get(i));
-                }
-                repository.loadBookmarkUser(groupStringId);
-            }
-        }
+        repository.loadBookmarkUser(listBookmark);
     }
 
     public void updateAUserOfBookmarkData(String key, Boolean value) {

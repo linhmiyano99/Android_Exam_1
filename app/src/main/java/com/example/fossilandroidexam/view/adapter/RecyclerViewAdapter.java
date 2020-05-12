@@ -1,6 +1,5 @@
 package com.example.fossilandroidexam.view.adapter;
 
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,41 +10,37 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
     private List<String> listBookmark;
-    private Map<String, Bitmap> mapImage;
     private OnItemUserReputationClickListener listenerReputationItem;
     private OnItemBookmarkClickListener listenerBookMarkItem;
 
     public RecyclerViewAdapter() {
         this.listUser = new ArrayList<>();
-        mapImage = new HashMap<>();
         listBookmark = new ArrayList<>();
     }
 
     public void addAllListUser(List<User> listUser) {
         this.listUser.addAll(listUser);
+        notifyDataSetChanged();
     }
 
     public void addAllListBookmark(List<String> listBookmark) {
         this.listBookmark.addAll(listBookmark);
+        notifyDataSetChanged();
     }
 
     public List<String> getListBookmark() {
         return listBookmark;
-    }
-
-    public Map<String, Bitmap> getMapImage() {
-        return mapImage;
     }
 
     @NonNull
@@ -55,7 +50,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 parent.getContext());
         View view =
                 inflater.inflate(R.layout.item_recylerview, parent, false);
-        // Get the app's shared preferences
         return new ViewHolder(view);
     }
 
@@ -64,7 +58,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         final User user = listUser.get(position);
         holder.textDisplay.setText(user.toString());
         holder.itemView.setTag(user.getStrUserId());
-        holder.imageProfile.setImageBitmap(mapImage.get(user.getSrtProfileImageUrl()));
+        Glide.with(holder.imageProfile).load(user.getSrtProfileImageUrl()).into(holder.imageProfile);
         holder.imageBookmark.setTag(user.getStrUserId());
         holder.linearLayout.setTag(user.getStrUserId());
 
@@ -76,7 +70,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 holder.imageBookmark.setImageResource(R.drawable.bookmark_border);
             }
         }
-
 
     }
 
@@ -93,10 +86,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         this.listenerReputationItem = listener;
     }
 
-    public void addImage(String url, Bitmap resource) {
-        mapImage.put(url, resource);
-        notifyDataSetChanged();
-    }
 
     public interface OnItemBookmarkClickListener {
         void onItemBookmark(String key, Boolean value);

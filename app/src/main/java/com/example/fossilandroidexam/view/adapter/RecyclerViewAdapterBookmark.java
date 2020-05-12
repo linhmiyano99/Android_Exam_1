@@ -1,7 +1,6 @@
 package com.example.fossilandroidexam.view.adapter;
 
 import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +11,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerViewAdapterBookmark.ViewHolder> {
+
     private List<User> listUser;
-    private Map<String, Bitmap> mapImage;
 
     private OnItemUserBookmarkedReputationClickListener listener;
 
     public RecyclerViewAdapterBookmark() {
         this.listUser = new ArrayList<>();
-        mapImage = new HashMap<>();
     }
 
     @NonNull
@@ -47,12 +44,10 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
         User user = listUser.get(position);
         holder.textDisplay.setText(user.toString());
         holder.itemView.setTag(user.getStrUserId());
-        holder.imageProfile.setImageBitmap(mapImage.get(user.getSrtProfileImageUrl()));
+        Glide.with(holder.imageProfile).load(user.getSrtProfileImageUrl()).into(holder.imageProfile);
         holder.imageBookmark.setTag(user.getStrUserId());
         holder.linearLayout.setTag(user.getStrUserId());
-        // load bookmark
         holder.imageBookmark.setImageResource(R.drawable.bookmark_black);
-
     }
 
     @Override
@@ -60,22 +55,15 @@ public class RecyclerViewAdapterBookmark extends RecyclerView.Adapter<RecyclerVi
         return listUser.size();
     }
 
-    public void clearListUser() {
-        listUser.clear();
-    }
-
-    public void addAllListUser(List<User> listUser) {
-        this.listUser.addAll(listUser);
+    public void setListUser(List<User> listUser) {
+        this.listUser = listUser;
+        notifyDataSetChanged();
     }
 
     public void setOnItemUserReputationClickListener(OnItemUserBookmarkedReputationClickListener listener) {
         this.listener = listener;
     }
 
-    public void addImage(String url, Bitmap resource) {
-        mapImage.put(url, resource);
-        notifyDataSetChanged();
-    }
 
     @SuppressLint("CheckResult")
     public interface OnItemUserBookmarkedReputationClickListener {
