@@ -20,12 +20,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class RemoteRepository {
+
     private static RemoteRepository INSTANCE;
     private StackOverflowAPI stackoverflowAPI;
     private MutableLiveData<List<User>> listUsers;
     private MutableLiveData<List<User>> listBookmarkUsers;
     private MutableLiveData<List<Reputation>> listReputation;
+
     private Callback<ListWrapper<Reputation>> reputationCallBack = new Callback<ListWrapper<Reputation>>() {
         @Override
         public void onResponse(@NotNull Call<ListWrapper<Reputation>> call, Response<ListWrapper<Reputation>> response) {
@@ -47,6 +50,7 @@ public class RemoteRepository {
         }
 
     };
+
     private Callback<ListWrapper<User>> idUserCallBack = new Callback<ListWrapper<User>>() {
 
         @Override

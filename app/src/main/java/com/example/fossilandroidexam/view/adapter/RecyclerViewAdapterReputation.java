@@ -52,7 +52,6 @@ public class RecyclerViewAdapterReputation extends RecyclerView.Adapter<Recycler
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             txtDetail = itemView.findViewById(R.id.txtDetail);
-
         }
     }
 

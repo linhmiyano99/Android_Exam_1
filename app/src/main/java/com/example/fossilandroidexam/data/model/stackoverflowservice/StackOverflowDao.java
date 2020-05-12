@@ -9,6 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.example.fossilandroidexam.data.model.stackoverflowservice.StackOverflowAPI.BASE_URL;
 
 public class StackOverflowDao {
+
     private static Retrofit INSTANCE;
 
     private static Retrofit getInstance() {
@@ -23,6 +24,7 @@ public class StackOverflowDao {
         }
         return INSTANCE;
     }
+
     public static StackOverflowAPI getStackOverflowAPI() {
         return getInstance().create(StackOverflowAPI.class);
     }

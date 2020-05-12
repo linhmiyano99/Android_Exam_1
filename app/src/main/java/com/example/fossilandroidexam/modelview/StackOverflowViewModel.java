@@ -13,6 +13,7 @@ import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 import java.util.List;
 
 public class StackOverflowViewModel extends AndroidViewModel {
+
     private RemoteRepository repository;
     private BookmarkRepository bookmarkRepository;
     private LiveData<List<User>> listUsers;
@@ -55,7 +56,6 @@ public class StackOverflowViewModel extends AndroidViewModel {
     }
 
     public void loadBookmarkUser(List<String> listBookmark) {
-
         if (listBookmark != null) {
             StringBuilder groupStringId = new StringBuilder();
             if (listBookmark.size() > 0) {

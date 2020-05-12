@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class DetailOfUserActivity extends AppCompatActivity {
+
     private RecyclerViewAdapterReputation adapterReputation;
     private int intDetailPage;
     private StackOverflowViewModel viewModel;

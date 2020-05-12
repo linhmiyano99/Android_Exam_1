@@ -32,13 +32,13 @@ import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    boolean isUserPage = true;
+    int intUserPage = 1;
+    StackOverflowViewModel viewModel;
     private RecyclerView recyclerView;
     private RecyclerViewAdapter adapterOfUsers;
     private RecyclerViewAdapterBookmark adapterOfBookMarkUsers;
-    boolean isUserPage = true;
     private Parcelable recyclerViewState;
-    int intUserPage = 1;
-    StackOverflowViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

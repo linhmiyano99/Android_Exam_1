@@ -8,6 +8,7 @@ import android.preference.PreferenceManager;
 import java.util.List;
 
 public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
+
     private String key;
     private Boolean value;
 
