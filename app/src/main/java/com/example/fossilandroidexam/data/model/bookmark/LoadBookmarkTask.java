@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 public class LoadBookmarkTask extends AsyncTask<Context, Void, List<String>> {
     private ListBookmarkResponse delegate = null;
 

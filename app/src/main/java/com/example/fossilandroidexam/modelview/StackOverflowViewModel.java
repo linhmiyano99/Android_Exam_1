@@ -1,11 +1,9 @@
 package com.example.fossilandroidexam.modelview;
 
-
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-
 
 import com.example.fossilandroidexam.data.repository.RemoteRepository;
 import com.example.fossilandroidexam.data.repository.BookmarkRepository;
@@ -14,22 +12,22 @@ import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 
 import java.util.List;
 
-public class StackoverflowViewModel extends AndroidViewModel {
+public class StackOverflowViewModel extends AndroidViewModel {
     private RemoteRepository repository;
     private BookmarkRepository bookmarkRepository;
     private LiveData<List<User>> listUsers;
     private LiveData<List<User>> listBookmarkUsers;
     private LiveData<List<Reputation>> listReputation;
-    private LiveData<List<String>> listbookmark;
+    private LiveData<List<String>> listBookmark;
 
-    public StackoverflowViewModel(Application application) {
+    public StackOverflowViewModel(Application application) {
         super(application);
         repository = RemoteRepository.getMainRepository();
         bookmarkRepository = BookmarkRepository.getBookmarkRepository(application);
         listUsers = repository.getListUsers();
         listBookmarkUsers = repository.getListBookmarkUsers();
         listReputation = repository.getListReputation();
-        listbookmark = bookmarkRepository.getListBookmark();
+        listBookmark = bookmarkRepository.getListBookmark();
     }
 
     public LiveData<List<User>> getListUsers() {
@@ -44,8 +42,8 @@ public class StackoverflowViewModel extends AndroidViewModel {
         return listReputation;
     }
 
-    public LiveData<List<String>> getListbookmark() {
-        return listbookmark;
+    public LiveData<List<String>> getListBookmark() {
+        return listBookmark;
     }
 
     public void loadDetailsOfUserOfPage(String userId, int intPage) {

@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.Reputation;
-import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
+import com.example.fossilandroidexam.modelview.StackOverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterReputation;
 
 import java.util.List;
@@ -21,7 +21,7 @@ import java.util.Objects;
 public class DetailOfUserActivity extends AppCompatActivity {
     private RecyclerViewAdapterReputation adapterReputation;
     private int intDetailPage;
-    private StackoverflowViewModel viewModel;
+    private StackOverflowViewModel viewModel;
     private String userIdReputation;
 
     @Override
@@ -29,7 +29,7 @@ public class DetailOfUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_of_user);
         intDetailPage = 1;
-        viewModel = new ViewModelProvider(this).get(StackoverflowViewModel.class);
+        viewModel = new ViewModelProvider(this).get(StackOverflowViewModel.class);
 
         TextView userId = findViewById(R.id.txtUserId);
         userId.setText(Objects.requireNonNull(getIntent().getExtras()).getString("userId"));

@@ -38,8 +38,6 @@ public class BookmarkRepository implements ListBookmarkResponse {
     @Override
     public void processListBookmarkFinish(List<String> output) {
         listBookmark.setValue(output);
-        Log.d("Value", String.valueOf(listBookmark));
-
     }
 
     private void loadBookmarkData() {

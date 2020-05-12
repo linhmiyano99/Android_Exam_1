@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
@@ -128,7 +127,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             imageBookmark = itemView.findViewById(R.id.bookmark);
             imageBookmark.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    //filtBoorkmark();
                     boolean value = true;
                     String key = (String) v.getTag();
                     if (listBookmark.contains(key)) {

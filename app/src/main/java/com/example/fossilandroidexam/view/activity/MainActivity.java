@@ -24,7 +24,7 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.example.fossilandroidexam.R;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
-import com.example.fossilandroidexam.modelview.StackoverflowViewModel;
+import com.example.fossilandroidexam.modelview.StackOverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterBookmark;
 
@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
     boolean isUserPage = true;
     private Parcelable recyclerViewState;
     int intUserPage = 1;
-    StackoverflowViewModel viewModel;
+    StackOverflowViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = new ViewModelProvider(this).get(StackoverflowViewModel.class);
+        viewModel = new ViewModelProvider(this).get(StackOverflowViewModel.class);
         recyclerView = findViewById(R.id.list);
         recyclerView.setHasFixedSize(true);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if (layoutManager.findLastCompletelyVisibleItemPosition() == Objects.requireNonNull(recyclerView.getAdapter()).getItemCount() - 1) {
                     //bottom of list!
-
                     if (isUserPage) {
                         recyclerViewState = Objects.requireNonNull(recyclerView.getLayoutManager()).onSaveInstanceState();
                         viewModel.loadAllUsersOfPage(intUserPage);
@@ -115,7 +114,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     public void loadDataFromViewModelToRecyclerViewAdapter() {
@@ -131,7 +129,6 @@ public class MainActivity extends AppCompatActivity {
                     if (adapterOfUsers.getMapImage().containsKey(user.getSrtProfileImageUrl()))
                         return;
                     final String url = user.getSrtProfileImageUrl();
-                    Log.d("xxxx,", url);
                     Glide.with(getApplicationContext())
                             .asBitmap()
                             .load(url)
@@ -150,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         //get Bookmark list response
-        viewModel.getListbookmark().observe(this, new Observer<List<String>>() {
+        viewModel.getListBookmark().observe(this, new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> strings) {
                 adapterOfUsers.addAllListBookmark(strings);
@@ -159,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
 
     public void listenersClickItem() {
         //click item from recyclerViewAdapter
@@ -192,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
@@ -206,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).create().show();
     }
-
 
     public void setUserPage() {
         isUserPage = true;

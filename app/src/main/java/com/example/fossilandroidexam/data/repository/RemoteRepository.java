@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.fossilandroidexam.data.model.stackoverflowservice.ListWrapper;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.Reputation;
-import com.example.fossilandroidexam.data.model.stackoverflowservice.StackoverflowAPI;
-import com.example.fossilandroidexam.data.model.stackoverflowservice.StackoverflowDao;
+import com.example.fossilandroidexam.data.model.stackoverflowservice.StackOverflowAPI;
+import com.example.fossilandroidexam.data.model.stackoverflowservice.StackOverflowDao;
 import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +22,7 @@ import retrofit2.Response;
 
 public class RemoteRepository {
     private static RemoteRepository INSTANCE;
-    private StackoverflowAPI stackoverflowAPI;
+    private StackOverflowAPI stackoverflowAPI;
     private MutableLiveData<List<User>> listUsers;
     private MutableLiveData<List<User>> listBookmarkUsers;
     private MutableLiveData<List<Reputation>> listReputation;
@@ -91,7 +91,7 @@ public class RemoteRepository {
     };
 
     private RemoteRepository() {
-        stackoverflowAPI = StackoverflowDao.getStackoverflowAPI();
+        stackoverflowAPI = StackOverflowDao.getStackOverflowAPI();
         listUsers = new MutableLiveData<>();
         listBookmarkUsers = new MutableLiveData<>();
         listReputation = new MutableLiveData<>();

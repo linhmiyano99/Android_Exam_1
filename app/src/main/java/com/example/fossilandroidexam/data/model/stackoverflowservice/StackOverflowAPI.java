@@ -1,12 +1,11 @@
 package com.example.fossilandroidexam.data.model.stackoverflowservice;
 
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface StackoverflowAPI {
+public interface StackOverflowAPI {
     String BASE_URL = "https://api.stackexchange.com";
 
     @GET("/2.2/users?pagesize=30&site=stackoverflow")

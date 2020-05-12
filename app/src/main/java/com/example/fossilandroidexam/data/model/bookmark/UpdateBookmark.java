@@ -7,9 +7,7 @@ import android.preference.PreferenceManager;
 
 import java.util.List;
 
-
 public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
-
     private String key;
     private Boolean value;
 
@@ -17,7 +15,6 @@ public class UpdateBookmark extends AsyncTask<Context, Void, List<String>> {
         this.key = key;
         this.value = value;
     }
-
 
     @Override
     protected List<String> doInBackground(Context... contexts) {

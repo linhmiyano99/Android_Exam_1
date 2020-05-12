@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class User {
     @SerializedName("display_name")
-    private String strDisplayName; // Should we public here?
+    public String strDisplayName; // Should we public here?
     @SerializedName("profile_image")
-    private String srtProfileImageUrl;
+    public String srtProfileImageUrl;
     @SerializedName("reputation")
-    private Integer intReputation;
+    public Integer intReputation;
     @SerializedName("location")
-    private String strLocation;
+    public String strLocation;
     @SerializedName("user_id")
-    private String strUserId;
+    public String strUserId;
 
     @NotNull
     @Override
