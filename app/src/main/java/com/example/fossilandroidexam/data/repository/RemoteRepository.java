@@ -16,8 +16,10 @@ public class RemoteRepository {
     private LiveData<List<Reputation>> listReputation;
 
     public static RemoteRepository getRemoteRepository() {
-        if(INSTANCE == null){
-            INSTANCE = new RemoteRepository();
+        synchronized(RemoteRepository.class) {
+            if(INSTANCE == null) {
+                INSTANCE = new RemoteRepository(application);
+            }
         }
         return INSTANCE;
     }

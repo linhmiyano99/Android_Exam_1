@@ -22,7 +22,11 @@ public class BookmarkDatabase implements ListBookmarkResponse {
 
     public static BookmarkDatabase getBookmarkRepository(Application application) {
         if (INSTANCE == null) {
-            INSTANCE = new BookmarkDatabase(application);
+            synchronized (BookmarkDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new BookmarkDatabase(application);
+                }
+            }
         }
         return INSTANCE;
     }

@@ -21,8 +21,7 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
     private List<User> listUser;
     private List<String> listBookmark;
-    private OnItemUserReputationClickListener listenerReputationItem;
-    private OnItemBookmarkClickListener listenerBookMarkItem;
+    private OnItemClickListener listener;
 
     public RecyclerViewAdapter() {
         this.listUser = new ArrayList<>();
@@ -78,23 +77,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return listUser.size();
     }
 
-    public void setOnItemBookmarkClickListener(OnItemBookmarkClickListener listener) {
-        this.listenerBookMarkItem = listener;
-    }
-
-    public void setOnItemUserReputationClickListener(OnItemUserReputationClickListener listener) {
-        this.listenerReputationItem = listener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
     }
 
 
-    public interface OnItemBookmarkClickListener {
+
+    public interface OnItemClickListener {
         void onItemBookmark(String key, Boolean value);
+        void onItemUserClick(String string);
     }
-
-    public interface OnItemUserReputationClickListener {
-        void onItemClick(String string);
-    }
-
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textDisplay;
         ImageView imageProfile;
@@ -109,8 +101,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (listenerReputationItem != null)
-                        listenerReputationItem.onItemClick((String) v.getTag());
+                    if (listener != null)
+                        listener.onItemUserClick((String) v.getTag());
                 }
             });
             imageBookmark = itemView.findViewById(R.id.bookmark);
@@ -124,8 +116,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     } else {
                         listBookmark.add(key);
                     }
-                    if (listenerBookMarkItem != null) {
-                        listenerBookMarkItem.onItemBookmark(key, value);
+                    if (listener!= null) {
+                        listener.onItemBookmark(key, value);
                     }
                     notifyDataSetChanged();
                 }

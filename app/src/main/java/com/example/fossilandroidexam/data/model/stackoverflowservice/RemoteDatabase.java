@@ -96,7 +96,11 @@ public class RemoteDatabase {
 
     public static RemoteDatabase getRemoteRepository() {
         if (INSTANCE == null) {
-            INSTANCE = new RemoteDatabase();
+            synchronized (RemoteDatabase.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new RemoteDatabase();
+                }
+            }
         }
         return INSTANCE;
     }

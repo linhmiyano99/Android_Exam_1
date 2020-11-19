@@ -111,10 +111,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void listenersClickItem() {
-        //click item from recyclerViewAdapter
-        adapterOfUsers.setOnItemUserReputationClickListener(new RecyclerViewAdapter.OnItemUserReputationClickListener() {
+        adapterOfUsers.setOnItemClickListener(new RecyclerViewAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(String string) {
+            public void onItemBookmark(String key, Boolean value) {
+                viewModel.updateAUserOfBookmarkData(key, value);
+            }
+
+            @Override
+            public void onItemUserClick(String string) {
                 Intent intent = new Intent(MainActivity.this, DetailOfUserActivity.class);
                 intent.putExtra("userId", string);
                 startActivity(intent);
@@ -131,13 +135,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //click bookmark item from recyclerViewAdapter
-        adapterOfUsers.setOnItemBookmarkClickListener(new RecyclerViewAdapter.OnItemBookmarkClickListener() {
-            @Override
-            public void onItemBookmark(String key, Boolean value) {
-                viewModel.updateAUserOfBookmarkData(key, value);
-            }
-        });
 
     }
 

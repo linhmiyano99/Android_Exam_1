@@ -15,7 +15,11 @@ public class LocalRepository {
 
     public static LocalRepository getLocalRepository(Application application) {
         if(INSTANCE == null){
-            INSTANCE = new LocalRepository(application);
+            synchronized(LocalRepository.class) {
+                if(INSTANCE == null) {
+                    INSTANCE = new LocalRepository(application);
+                }
+            }
         }
         return INSTANCE;
     }
