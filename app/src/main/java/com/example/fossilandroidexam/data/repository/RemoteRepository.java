@@ -18,7 +18,7 @@ public class RemoteRepository {
     public static RemoteRepository getRemoteRepository() {
         synchronized(RemoteRepository.class) {
             if(INSTANCE == null) {
-                INSTANCE = new RemoteRepository(application);
+                INSTANCE = new RemoteRepository();
             }
         }
         return INSTANCE;
