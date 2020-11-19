@@ -3,11 +3,13 @@ package com.example.fossilandroidexam.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -59,7 +61,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         holder.itemView.setTag(user.getStrUserId());
         Glide.with(holder.imageProfile).load(user.getSrtProfileImageUrl()).into(holder.imageProfile);
         holder.imageBookmark.setTag(user.getStrUserId());
-        holder.linearLayout.setTag(user.getStrUserId());
+        holder.constraint_layout.setTag(user.getStrUserId());
 
         // load bookmark
         if (listBookmark != null) {
@@ -90,15 +92,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textDisplay;
         ImageView imageProfile;
-        ImageView imageBookmark;
-        LinearLayout linearLayout;
+        ImageButton imageBookmark;
+        ConstraintLayout constraint_layout;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             textDisplay = itemView.findViewById(R.id.displayInfo);
             imageProfile = itemView.findViewById(R.id.profile_image);
-            linearLayout = itemView.findViewById(R.id.linearLayout);
-            linearLayout.setOnClickListener(new View.OnClickListener() {
+            constraint_layout = itemView.findViewById(R.id.constraint_layout);
+            constraint_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null)
