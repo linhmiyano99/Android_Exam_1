@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
+import com.example.fossilandroidexam.data.model.User;
 import com.example.fossilandroidexam.modelview.StackOverflowViewModel;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
 import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterBookmark;

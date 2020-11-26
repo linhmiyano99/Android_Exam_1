@@ -2,9 +2,9 @@ package com.example.fossilandroidexam.data.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.fossilandroidexam.data.model.stackoverflowservice.RemoteDatabase;
-import com.example.fossilandroidexam.data.model.stackoverflowservice.Reputation;
-import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
+import com.example.fossilandroidexam.data.stackoverflowservice.RemoteDatabase;
+import com.example.fossilandroidexam.data.model.Reputation;
+import com.example.fossilandroidexam.data.model.User;
 
 import java.util.List;
 

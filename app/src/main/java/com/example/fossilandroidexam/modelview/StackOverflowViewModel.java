@@ -5,8 +5,8 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.fossilandroidexam.data.model.stackoverflowservice.Reputation;
-import com.example.fossilandroidexam.data.model.stackoverflowservice.User;
+import com.example.fossilandroidexam.data.model.Reputation;
+import com.example.fossilandroidexam.data.model.User;
 import com.example.fossilandroidexam.data.repository.LocalRepository;
 import com.example.fossilandroidexam.data.repository.RemoteRepository;
 

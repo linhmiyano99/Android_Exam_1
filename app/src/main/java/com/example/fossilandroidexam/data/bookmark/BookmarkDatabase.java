@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.model.bookmark;
+package com.example.fossilandroidexam.data.bookmark;
 
 import android.app.Application;
 import android.content.Context;

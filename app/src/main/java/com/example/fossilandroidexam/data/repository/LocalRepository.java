@@ -4,7 +4,7 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.fossilandroidexam.data.model.bookmark.BookmarkDatabase;
+import com.example.fossilandroidexam.data.bookmark.BookmarkDatabase;
 
 import java.util.List;
 
