@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.stackoverflowservice;
+package com.example.exam.data.stackoverflowservice;
 
 import java.util.List;
 

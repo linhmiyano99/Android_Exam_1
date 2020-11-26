@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.model;
+package com.example.exam.data.model;
 
 import com.google.gson.annotations.SerializedName;
 

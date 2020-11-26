@@ -1,7 +1,7 @@
-package com.example.fossilandroidexam.data.stackoverflowservice;
+package com.example.exam.data.stackoverflowservice;
 
-import com.example.fossilandroidexam.data.model.Reputation;
-import com.example.fossilandroidexam.data.model.User;
+import com.example.exam.data.model.Reputation;
+import com.example.exam.data.model.User;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

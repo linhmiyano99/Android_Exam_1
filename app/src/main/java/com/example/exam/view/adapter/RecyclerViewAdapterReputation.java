@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.view.adapter;
+package com.example.exam.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.data.model.Reputation;
+import com.example.exam.R;
+import com.example.exam.data.model.Reputation;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.view.activity;
+package com.example.exam.view.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,11 +15,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.data.model.User;
-import com.example.fossilandroidexam.modelview.StackOverflowViewModel;
-import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapter;
-import com.example.fossilandroidexam.view.adapter.RecyclerViewAdapterBookmark;
+import com.example.exam.R;
+import com.example.exam.data.model.User;
+import com.example.exam.modelview.StackOverflowViewModel;
+import com.example.exam.view.adapter.RecyclerViewAdapter;
+import com.example.exam.view.adapter.RecyclerViewAdapterBookmark;
 
 import java.util.List;
 import java.util.Objects;

@@ -1,10 +1,10 @@
-package com.example.fossilandroidexam.data.repository;
+package com.example.exam.data.repository;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.fossilandroidexam.data.bookmark.BookmarkDatabase;
+import com.example.exam.data.bookmark.BookmarkDatabase;
 
 import java.util.List;
 

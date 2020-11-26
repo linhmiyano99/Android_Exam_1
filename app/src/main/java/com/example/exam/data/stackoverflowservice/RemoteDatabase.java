@@ -1,12 +1,12 @@
-package com.example.fossilandroidexam.data.stackoverflowservice;
+package com.example.exam.data.stackoverflowservice;
 
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.fossilandroidexam.data.model.Reputation;
-import com.example.fossilandroidexam.data.model.User;
+import com.example.exam.data.model.Reputation;
+import com.example.exam.data.model.User;
 
 import org.jetbrains.annotations.NotNull;
 

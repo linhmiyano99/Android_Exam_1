@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.view.adapter;
+package com.example.exam.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +12,8 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.fossilandroidexam.R;
-import com.example.fossilandroidexam.data.model.User;
+import com.example.exam.R;
+import com.example.exam.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;

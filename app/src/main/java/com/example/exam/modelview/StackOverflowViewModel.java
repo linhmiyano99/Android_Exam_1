@@ -1,14 +1,14 @@
-package com.example.fossilandroidexam.modelview;
+package com.example.exam.modelview;
 
 import android.app.Application;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.example.fossilandroidexam.data.model.Reputation;
-import com.example.fossilandroidexam.data.model.User;
-import com.example.fossilandroidexam.data.repository.LocalRepository;
-import com.example.fossilandroidexam.data.repository.RemoteRepository;
+import com.example.exam.data.model.Reputation;
+import com.example.exam.data.model.User;
+import com.example.exam.data.repository.LocalRepository;
+import com.example.exam.data.repository.RemoteRepository;
 
 import java.util.List;
 

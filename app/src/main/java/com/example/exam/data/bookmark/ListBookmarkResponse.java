@@ -1,4 +1,4 @@
-package com.example.fossilandroidexam.data.bookmark;
+package com.example.exam.data.bookmark;
 
 import java.util.List;
 
