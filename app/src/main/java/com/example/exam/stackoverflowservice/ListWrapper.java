@@ -1,4 +1,4 @@
-package com.example.exam.data.stackoverflowservice;
+package com.example.exam.stackoverflowservice;
 
 import java.util.List;
 

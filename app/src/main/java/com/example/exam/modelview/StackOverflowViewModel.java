@@ -7,8 +7,8 @@ import androidx.lifecycle.LiveData;
 
 import com.example.exam.data.model.Reputation;
 import com.example.exam.data.model.User;
-import com.example.exam.data.repository.LocalRepository;
-import com.example.exam.data.repository.RemoteRepository;
+import com.example.exam.repository.LocalRepository;
+import com.example.exam.repository.RemoteRepository;
 
 import java.util.List;
 

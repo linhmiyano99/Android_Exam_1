@@ -1,4 +1,4 @@
-package com.example.exam.data.repository;
+package com.example.exam.repository;
 
 import android.app.Application;
 

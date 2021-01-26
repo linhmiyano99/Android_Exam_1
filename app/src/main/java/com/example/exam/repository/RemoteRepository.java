@@ -1,8 +1,8 @@
-package com.example.exam.data.repository;
+package com.example.exam.repository;
 
 import androidx.lifecycle.LiveData;
 
-import com.example.exam.data.stackoverflowservice.RemoteDatabase;
+import com.example.exam.stackoverflowservice.RemoteDatabase;
 import com.example.exam.data.model.Reputation;
 import com.example.exam.data.model.User;
 

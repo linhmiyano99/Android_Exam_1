@@ -1,4 +1,4 @@
-package com.example.exam.data.stackoverflowservice;
+package com.example.exam.stackoverflowservice;
 
 import com.example.exam.data.model.Reputation;
 import com.example.exam.data.model.User;
