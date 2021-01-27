@@ -20,7 +20,7 @@ public class User {
     @Override
     public String toString() {
         return  strDisplayName
-                + "\n " + intReputation
+                + "\n" + intReputation
                 + ", " + strLocation ;
     }
 
